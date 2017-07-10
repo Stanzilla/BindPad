@@ -5,6 +5,7 @@ BindPad Addon for World of Warcraft
 Author: Tageshi
 
 --]]
+local _, addon = ...
 
 local function concat(arg1, arg2)
     if arg1 and arg2 then
@@ -17,9 +18,6 @@ local NUM_ICONS_PER_ROW = 5;
 local NUM_ICON_ROWS = 4;
 local MACRO_ICON_ROW_HEIGHT = 36;
 local MACRO_ICON_FILENAMES = {};
-
--- Avoid taint of official lua codes.
-local i, j, _;
 
 -- Register BindPad frame to be controlled together with
 -- other panels in standard UI.
@@ -38,7 +36,6 @@ local TYPE_ITEM = "ITEM";
 local TYPE_SPELL = "SPELL";
 local TYPE_MACRO = "MACRO";
 local TYPE_BPMACRO = "CLICK";
-
 
 local BindPadPetAction = {
     [PET_ACTION_MOVE_TO] = SLASH_PET_MOVE_TO1,
@@ -67,6 +64,14 @@ BindPadCore = {
     eventProc = {};
 };
 local BindPadCore = BindPadCore;
+
+function BindPadFrame_Toggle()
+    if BindPadFrame:IsVisible() then
+        HideUIPanel(BindPadFrame);
+    else
+        ShowUIPanel(BindPadFrame);
+    end
+end
 
 function BindPad_SlashCmd(msg)
     local cmd, arg = msg:match("^(%S*)%s*(.-)$")
@@ -144,14 +149,6 @@ end
 
 function BindPadFrame_OutputText(text)
     ChatFrame1:AddMessage("[BindPad] "..text, 1.0, 1.0, 0.0);
-end
-
-function BindPadFrame_Toggle()
-    if BindPadFrame:IsVisible() then
-        HideUIPanel(BindPadFrame);
-    else
-        ShowUIPanel(BindPadFrame);
-    end
 end
 
 function BindPadFrame_OnShow()
@@ -605,7 +602,7 @@ function BindPadMacroAddButton_OnClick(self)
     else
         BindPadCore.HideSubFrames();
 
-        PlaySound("gsTitleOptionOK");
+        PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) -- SOUNDKIT.GS_TITLE_OPTION_OK
         BindPadMacroPopupFrame_Open(self);
     end
 end
@@ -1044,7 +1041,7 @@ function BindPadCore.PlaceVirtualIconIntoSlot(id, drag)
     BindPadCore.UpdateMacroText(padSlot);
 
     table.wipe(drag);
-    PlaySound("igAbilityIconDrop");
+    PlaySound(PlaySoundKitID and "igAbilityIconDrop" or 838) -- SOUNDKIT.IG_ABILITY_ICON_DROP
 end
 
 function BindPadCore.CheckCorruptedSlot(padSlot)
@@ -1260,7 +1257,7 @@ function BindPadCore.PickupSlot(self, id, isOnDragStart)
         drag.isForAllCharacters = padSlot.isForAllCharacters;
 
         BindPadCore.UpdateCursor();
-        PlaySound("igAbilityIconPickup");
+        PlaySound(PlaySoundKitID and "igAbilityIconPickup" or 834) -- SOUNDKIT.IG_ABILITY_OPEN
     end
 
     if (not ( isOnDragStart and IsModifierKeyDown() )) then
@@ -1642,7 +1639,7 @@ function BindPadCore.ClearCursor()
     local drag = BindPadCore.drag;
     if TYPE_BPMACRO == drag.type then
         ResetCursor();
-        PlaySound("igAbilityIconDrop");
+        PlaySound(PlaySoundKitID and "igAbilityIconDrop" or 838) -- SOUNDKIT.IG_ABILITY_ICON_DROP
     end
     drag.type = nil;
 end
@@ -2457,10 +2454,15 @@ function BindPadCore.ReplaceMacroPopup()
         end
     end
     popup:SetScript("OnShow", OnShow)
-
     popup:SetScript("OnHide", BindPadMacroPopupFrame_OnHide)
-    popup:SetScript("OnOkayClicked", function(...) PlaySound("gsTitleOptionOK"); BindPadMacroPopupOkayButton_OnClick(...) end)
-    popup:SetScript("OnCancelClicked", function(...) PlaySound("gsTitleOptionOK"); BindPadMacroPopupFrame_CancelEdit(...) end)
+    popup:SetScript("OnOkayClicked", function(...)
+        PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) -- SOUNDKIT.GS_TITLE_OPTION_OK
+        BindPadMacroPopupOkayButton_OnClick(...)
+    end)
+    popup:SetScript("OnCancelClicked", function(...)
+        PlaySound(PlaySoundKitID and "gsTitleOptionEXIT" or 799) -- SOUNDKIT.GS_TITLE_OPTION_EXIT
+        BindPadMacroPopupFrame_CancelEdit(...)
+    end)
 
     local function OnSelectedIconChanged()
         popup.selectedIcon = popup.iconsFrame:GetSelectedIcon()

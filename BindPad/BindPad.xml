@@ -58,7 +58,7 @@
     </Layers>
     <Scripts>
       <OnClick>
-        PlaySound("igCharacterInfoTab");
+        PlaySound(PlaySoundKitID and "igCharacterInfoTab" or 841) <!-- SOUNDKIT.IG_CHARACTER_INFO_TAB -->
         BindPadProfileTab_OnClick(self, button, down);
       </OnClick>
       <OnEnter>
@@ -155,7 +155,7 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnLoad>          
+          <OnLoad>
             self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
           </OnLoad>
           <OnClick>
@@ -171,7 +171,7 @@
             end
           </OnEnter>
           <OnLeave>
-            GameTooltip:Hide();    
+            GameTooltip:Hide();
           </OnLeave>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-PlusButton-Up"/>
@@ -182,7 +182,7 @@
     </Frames>
 
     <Scripts>
-      <OnLoad>          
+      <OnLoad>
         self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
         self:RegisterForDrag("LeftButton");
         self:RegisterEvent("UPDATE_BINDINGS");
@@ -207,7 +207,7 @@
       </OnEvent>
     </Scripts>
   </Button>
-    
+
   <Frame name="BindPadFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
     <Size>
       <AbsDimension x="384" y="512"/>
@@ -273,106 +273,106 @@
     </Layers>
     <Frames>
       <ScrollFrame name="BindPadScrollFrame" inherits="UIPanelScrollFrameTemplate">
-	<Size x="292" y="321"/>
-	<Anchors>
-	  <Anchor point="TOPLEFT" x="24" y="-75"/>
-	</Anchors>
-	<Layers>
-	  <Layer level="ARTWORK">
-	    <Texture name="$parentTop" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-	      <Size x="31" y="102"/>
-	      <Anchors>
-		<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-2" y="5"/>
-	      </Anchors>
-	      <TexCoords left="0" right="0.484375" top="0" bottom="0.4"/>
-	    </Texture>
-	    <Texture name="$parentBottom" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-	      <Size x="31" y="106"/>
-	      <Anchors>
-		<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-2" y="-2"/>
-	      </Anchors>
-	      <TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
-	    </Texture>
-	    <Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-	      <Size x="31" y="1"/>
-	      <Anchors>
-		<Anchor point="TOP" relativeTo="$parentTop" relativePoint="BOTTOM"/>
-		<Anchor point="BOTTOM" relativeTo="$parentBottom" relativePoint="TOP"/>
-	      </Anchors>
-	      <TexCoords left="0" right="0.484375" top=".75" bottom="1.0"/>
-	    </Texture>
-	  </Layer>
-	</Layers>
-	<Scripts>
-	  <OnLoad function="ScrollFrame_OnLoad"/>
-	</Scripts>
-	<ScrollChild>
-	  <Frame name="BindPadSlotButtonContainer">
-	    <Size x="285" y="10"/>
-	    <Anchors>
-	      <Anchor point="TOPLEFT"/>
-	    </Anchors>
-	    <Frames>
-	      <Frame name="BindPadScrollFrameFooter">
-		<Size x="285" y="36"/>
-		<Layers>
-		  <Layer level="ARTWORK">
-		    <FontString name="BindPadScrollFrameNumber" inherits="GameFontNormal" justifyH="RIGHT" text="42 Slots shown">
-		      <Size>
-			<AbsDimension x="102" y="0"/>
-		      </Size>
-		      <Anchors>
-			<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-64" y="12"/>
-		      </Anchors>
-		    </FontString>
-		  </Layer>
-		</Layers>
-		<Frames>
-		  <Button name="BindPadShowLessSlotButton">
-		    <Size x="32" y="32"/>
-		    <Anchors>
-		      <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-32" y="0"/>
-		    </Anchors>
-		    <Scripts>
-		      <OnClick function="BindPadShowLessSlotButton_OnClick"/>
-		      <OnEnter>
-			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			GameTooltip:SetText(BINDPAD_TOOLTIP_SHOW_LESS_SLOT, nil, nil, nil, nil, 1);
-		      </OnEnter>
-		      <OnLeave>
-			GameTooltip:Hide();
-		      </OnLeave>
-		    </Scripts>
-		    <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
-		    <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
-		    <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
-		    <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-		  </Button>
-		  <Button name="BindPadShowMoreSlotButton">
-		    <Size x="32" y="32"/>
-		    <Anchors>
-		      <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
-		    </Anchors>
-		    <Scripts>
-		      <OnClick function="BindPadShowMoreSlotButton_OnClick"/>
-		      <OnEnter>
-			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-			GameTooltip:SetText(BINDPAD_TOOLTIP_SHOW_MORE_SLOT, nil, nil, nil, nil, 1);
-		      </OnEnter>
-		      <OnLeave>
-			GameTooltip:Hide();
-		      </OnLeave>
-		    </Scripts>
-		    <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
-		    <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
-		    <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
-		    <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-		  </Button>
-		</Frames>
-	      </Frame>
-	    </Frames>
-	  </Frame>
-	</ScrollChild>
+    <Size x="292" y="321"/>
+    <Anchors>
+      <Anchor point="TOPLEFT" x="24" y="-75"/>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentTop" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+          <Size x="31" y="102"/>
+          <Anchors>
+        <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-2" y="5"/>
+          </Anchors>
+          <TexCoords left="0" right="0.484375" top="0" bottom="0.4"/>
+        </Texture>
+        <Texture name="$parentBottom" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+          <Size x="31" y="106"/>
+          <Anchors>
+        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-2" y="-2"/>
+          </Anchors>
+          <TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+        </Texture>
+        <Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+          <Size x="31" y="1"/>
+          <Anchors>
+        <Anchor point="TOP" relativeTo="$parentTop" relativePoint="BOTTOM"/>
+        <Anchor point="BOTTOM" relativeTo="$parentBottom" relativePoint="TOP"/>
+          </Anchors>
+          <TexCoords left="0" right="0.484375" top=".75" bottom="1.0"/>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad function="ScrollFrame_OnLoad"/>
+    </Scripts>
+    <ScrollChild>
+      <Frame name="BindPadSlotButtonContainer">
+        <Size x="285" y="10"/>
+        <Anchors>
+          <Anchor point="TOPLEFT"/>
+        </Anchors>
+        <Frames>
+          <Frame name="BindPadScrollFrameFooter">
+        <Size x="285" y="36"/>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="BindPadScrollFrameNumber" inherits="GameFontNormal" justifyH="RIGHT" text="42 Slots shown">
+              <Size>
+            <AbsDimension x="102" y="0"/>
+              </Size>
+              <Anchors>
+            <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-64" y="12"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <Button name="BindPadShowLessSlotButton">
+            <Size x="32" y="32"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-32" y="0"/>
+            </Anchors>
+            <Scripts>
+              <OnClick function="BindPadShowLessSlotButton_OnClick"/>
+              <OnEnter>
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:SetText(BINDPAD_TOOLTIP_SHOW_LESS_SLOT, nil, nil, nil, nil, 1);
+              </OnEnter>
+              <OnLeave>
+            GameTooltip:Hide();
+              </OnLeave>
+            </Scripts>
+            <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+            <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+            <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+            <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+          </Button>
+          <Button name="BindPadShowMoreSlotButton">
+            <Size x="32" y="32"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+            </Anchors>
+            <Scripts>
+              <OnClick function="BindPadShowMoreSlotButton_OnClick"/>
+              <OnEnter>
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:SetText(BINDPAD_TOOLTIP_SHOW_MORE_SLOT, nil, nil, nil, nil, 1);
+              </OnEnter>
+              <OnLeave>
+            GameTooltip:Hide();
+              </OnLeave>
+            </Scripts>
+            <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+            <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+            <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+            <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+          </Button>
+        </Frames>
+          </Frame>
+        </Frames>
+      </Frame>
+    </ScrollChild>
       </ScrollFrame>
       <Button name="$parentTab1" inherits="TabButtonTemplate" text="BINDPAD_TEXT_GENERAL_TAB" id="1">
         <Anchors>
@@ -416,7 +416,7 @@
             BindPadFrameTab_OnClick(self);
           </OnClick>
           <OnEnter>
-	    BindPadFrameTab_OnEnter(self);
+        BindPadFrameTab_OnEnter(self);
           </OnEnter>
           <OnLeave>
             GameTooltip:Hide();
@@ -441,7 +441,7 @@
             BindPadFrameTab_OnClick(self);
           </OnClick>
           <OnEnter>
-	    BindPadFrameTab_OnEnter(self);
+        BindPadFrameTab_OnEnter(self);
           </OnEnter>
           <OnLeave>
             GameTooltip:Hide();
@@ -466,7 +466,7 @@
             BindPadFrameTab_OnClick(self);
           </OnClick>
           <OnEnter>
-	    BindPadFrameTab_OnEnter(self);
+            BindPadFrameTab_OnEnter(self);
           </OnEnter>
           <OnLeave>
             GameTooltip:Hide();
@@ -744,11 +744,11 @@
         BindPadFrame_OnEvent(self, event, ...);
       </OnEvent>
       <OnShow>
-        PlaySound("igCharacterInfoOpen");
+        PlaySound(PlaySoundKitID and "igCharacterInfoOpen" or 839) <!-- SOUNDKIT.IG_CHARACTER_INFO_OPEN -->
         BindPadFrame_OnShow();
       </OnShow>
       <OnHide>
-        PlaySound("igCharacterInfoClose");
+        PlaySound(PlaySoundKitID and "igCharacterInfoClose" or 840) <!-- SOUNDKIT.IG_CHARACTER_INFO_CLOSE -->
         BindPadFrame_OnHide(self);
       </OnHide>
     </Scripts>
@@ -1313,11 +1313,11 @@
     </Frames>
     <Scripts>
       <OnShow>
-        PlaySound("igCharacterInfoOpen");
+        PlaySound(PlaySoundKitID and "igCharacterInfoOpen" or 839) <!-- SOUNDKIT.IG_CHARACTER_INFO_OPEN -->
         BindPadMacroPopupFrame_OnShow(self);
       </OnShow>
       <OnHide>
-        PlaySound("gsTitleOptionOK");
+        PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) <!-- SOUNDKIT.GS_TITLE_OPTION_OK -->
         BindPadMacroPopupFrame_OnHide(self);
       </OnHide>
       <OnMouseWheel>
@@ -1455,12 +1455,12 @@
             </Offset>
           </Anchor>
         </Anchors>
-	<Scripts>
-	  <OnLoad>
-	    self.scrollBarHideable = true;
-	    ScrollFrame_OnLoad(self);
-	  </OnLoad>
-	</Scripts>
+    <Scripts>
+      <OnLoad>
+        self.scrollBarHideable = true;
+        ScrollFrame_OnLoad(self);
+      </OnLoad>
+    </Scripts>
         <ScrollChild>
           <EditBox name="BindPadMacroFrameText" multiLine="true" autoFocus="false">
             <Size>
@@ -1468,7 +1468,7 @@
             </Size>
             <Scripts>
               <OnTextChanged>
-		ScrollingEdit_OnTextChanged(self, self:GetParent());
+        ScrollingEdit_OnTextChanged(self, self:GetParent());
               </OnTextChanged>
               <OnEscapePressed>
                 self:ClearFocus();
@@ -1476,13 +1476,13 @@
               <OnEditFocusLost>
                 BindPadMacroFrame_OnHide(self);
               </OnEditFocusLost>
-	      <OnCursorChanged function="ScrollingEdit_OnCursorChanged"/>
-	      <OnUpdate>
-		ScrollingEdit_OnUpdate(self, elapsed, self:GetParent());
-	      </OnUpdate>
+          <OnCursorChanged function="ScrollingEdit_OnCursorChanged"/>
+          <OnUpdate>
+        ScrollingEdit_OnUpdate(self, elapsed, self:GetParent());
+          </OnUpdate>
             </Scripts>
             <!--<FontString inherits="GameFontHighlightSmall"/>-->
-	    <FontString inherits="ChatFontNormal"/>
+        <FontString inherits="ChatFontNormal"/>
           </EditBox>
         </ScrollChild>
       </ScrollFrame>
@@ -1613,11 +1613,11 @@
     </Frames>
     <Scripts>
       <OnShow>
-        PlaySound("igCharacterInfoOpen");
+        PlaySound(PlaySoundKitID and "igCharacterInfoOpen" or 839) <!-- SOUNDKIT.IG_CHARACTER_INFO_OPEN -->
         BindPadMacroFrame_OnShow(self);
       </OnShow>
       <OnHide>
-        PlaySound("igCharacterInfoClose");
+        PlaySound(PlaySoundKitID and "igCharacterInfoClose" or 840) <!-- SOUNDKIT.IG_CHARACTER_INFO_CLOSE -->
         BindPadMacroFrame_OnHide(self);
       </OnHide>
       <OnMouseWheel>
@@ -1625,7 +1625,7 @@
       </OnMouseWheel>
     </Scripts>
   </Frame>
-  
+
   <Frame name="BindPadDialogFrame" parent="UIParent" toplevel="true" enableKeyboard="true" enableMouse="true" frameStrata="DIALOG" hidden="true">
     <Size>
       <AbsDimension x="420" y="72"/>
@@ -1639,43 +1639,43 @@
     </Anchors>
     <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
       <BackgroundInsets>
-	<AbsInset left="11" right="12" top="12" bottom="11"/>
+    <AbsInset left="11" right="12" top="12" bottom="11"/>
       </BackgroundInsets>
       <TileSize>
-	<AbsValue val="32"/>
+    <AbsValue val="32"/>
       </TileSize>
       <EdgeSize>
-	<AbsValue val="32"/>
+    <AbsValue val="32"/>
       </EdgeSize>
     </Backdrop>
     <Layers>
       <Layer level="ARTWORK">
-	<FontString name="$parentText" parentKey="text" inherits="GameFontHighlight">
-	  <Size>
-	    <AbsDimension x="290" y="0"/>
-	  </Size>
-	  <Anchors>
-	    <Anchor point="TOP">
-	      <Offset>
-		<AbsDimension x="0" y="-16"/>
-	      </Offset>
-	    </Anchor>
-	  </Anchors>
-	</FontString>
-	<Texture name="$parentAlertIcon" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew">
-	  <Size>
-	    <AbsDimension x="36" y="36"/>
-	  </Size>
-	  <Anchors>
-	    <Anchor point="LEFT" x="24" y="0"/>
-	  </Anchors>
-	</Texture>
+    <FontString name="$parentText" parentKey="text" inherits="GameFontHighlight">
+      <Size>
+        <AbsDimension x="290" y="0"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+        <AbsDimension x="0" y="-16"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </FontString>
+    <Texture name="$parentAlertIcon" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew">
+      <Size>
+        <AbsDimension x="36" y="36"/>
+      </Size>
+      <Anchors>
+        <Anchor point="LEFT" x="24" y="0"/>
+      </Anchors>
+    </Texture>
       </Layer>
     </Layers>
     <Frames>
       <Button name="$parentButton1" inherits="BindPadUIPanelButtonTemplate" parentKey="okaybutton" id="1" text="OKAY">
         <Size>
-	  <AbsDimension x="128" y="21"/>
+      <AbsDimension x="128" y="21"/>
         </Size>
         <Anchors>
           <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOM">
@@ -1687,7 +1687,7 @@
       </Button>
       <Button name="$parentButton2" inherits="BindPadUIPanelButtonTemplate" parentKey="cancelbutton" id="2" text="CANCEL">
         <Size>
-	  <AbsDimension x="128" y="21"/>
+      <AbsDimension x="128" y="21"/>
         </Size>
         <Anchors>
           <Anchor point="LEFT" relativeTo="$parentButton1" relativePoint="RIGHT">
@@ -1700,9 +1700,9 @@
     </Frames>
     <Scripts>
       <OnKeyDown>
-	if key == "ESCAPE" then
-  	  self.cancelbutton:Click();
-	end
+        if key == "ESCAPE" then
+            self.cancelbutton:Click();
+        end
       </OnKeyDown>
     </Scripts>
   </Frame>
