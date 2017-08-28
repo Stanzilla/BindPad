@@ -1,4 +1,4 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: BindPad
 ## Version: 2.8.3
 ## Author: Tageshi
