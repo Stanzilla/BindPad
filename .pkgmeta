@@ -1,0 +1,4 @@
+package-as: BindPad
+
+move-folders:
+	BindPad/BindPad: BindPad
