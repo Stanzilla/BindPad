@@ -188,6 +188,12 @@ http://www.curse.com/addons/wow/bind-pad
 -------------------------------------------------------------------------
 
 
+Version 2.8.4
+- Stanzilla's quick fix.
+  Update TOC for Patch 7.3
+  update soundkit usage for 7.3
+
+
 Version 2.8.3
 - Fixed Lua Error: attempt to index local 'profile' (a nil value)
 
