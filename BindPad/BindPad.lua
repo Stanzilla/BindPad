@@ -580,10 +580,6 @@ function BindPadMacroPopupFrame_Open(self)
     if TYPE_BPMACRO == padSlot.type then
         BindPadCore.selectedSlot = padSlot;
         BindPadCore.selectedSlotButton = self;
-
-        -- Use AdvancedIconSelector if available.
-        BindPadCore.ReplaceMacroPopup()
-
         BindPadMacroPopupEditBox:SetText(padSlot.name);
         BindPadMacroPopupFrame.selectedIconTexture = padSlot.texture;
         BindPadMacroPopupFrame.selectedIcon = nil;
@@ -2357,124 +2353,6 @@ end
 function BindPadCore.HideSubFrames()
     BindPadCore.HidePopup();
     HideUIPanel(BindPadMacroFrame);
-end
-
-
-BindPadCore.replaced = false
--- Replaces the icon selection for BindPad Macro with LibAdvancedIconSelector-1.0.
-function BindPadCore.ReplaceMacroPopup()
-    if BindPadCore.replaced then
-        return
-    end
-    BindPadCore.replaced = true
-
-    local libname = "LibAdvancedIconSelector-1.0"
-    if not LibStub then
-        if not LoadAddOn(libname) then
-            return
-        end
-    end
-
-    local silent = true
-    local libAIS = LibStub(libname, silent)
-    if not libAIS then
-        if LoadAddOn(libname) or LoadAddOn("AdvancedIconSelector") then
-            libAIS = LibStub(libname, silent)
-        end
-    end
-    if not libAIS then
-        return
-    end
-
-    local customFrame = CreateFrame("Frame", nil, nil)
-    customFrame:SetHeight(60)
-
-    local options = {
-        customFrame = customFrame,
-        headerWidth = 320,
-        headerText = BINDPAD_MACRO_TITLE,
-    }
-
-    local popup = libAIS:CreateIconSelectorWindow("BindPadMacroPopupFrame", nil, options)
-    BindPadMacroPopupFrame = popup
-
-    popup.nameText = customFrame:CreateFontString()
-    popup.nameText:SetFontObject("GameFontHighlightSmall")
-    popup.nameText:SetText(MACRO_POPUP_TEXT)
-    popup.nameText:SetPoint("TOPLEFT", 0, 0)
-
-    popup.chooseIconText = customFrame:CreateFontString()
-    popup.chooseIconText:SetFontObject("GameFontHighlightSmall")
-    popup.chooseIconText:SetText(MACRO_POPUP_CHOOSE_ICON)
-    popup.chooseIconText:SetPoint("TOPLEFT", 0, -48)
-
-    popup.editBox = CreateFrame("EditBox", "BindPadMacroPopupEditBox", customFrame, "InputBoxTemplate")
-    popup.editBox:SetAutoFocus(true)
-    popup.editBox:SetMaxLetters(16)
-    popup.editBox:SetFontObject("ChatFontNormal")
-    popup.editBox:SetSize(182, 20)
-    popup.editBox:SetPoint("TOPLEFT", 5, -14)
-    BindPadMacroPopupEditBox = popup.editBox
-
-    local function BindPadMacroPopupOkayButton_Update()
-        if (strlen(popup.editBox:GetText()) > 0) then
-            popup.okButton:Enable()
-        else
-            popup.okButton:Disable()
-        end
-    end
-
-    local function OnTextChanged(self)
-        BindPadMacroPopupEditBox_OnTextChanged(self)
-        BindPadMacroPopupOkayButton_Update()
-    end
-    popup.editBox:SetScript("OnTextChanged", OnTextChanged)
-    popup.editBox:SetScript("OnEscapePressed", BindPadMacroPopupFrame_CancelEdit)
-    local function OnEnterPressed(self)
-        if popup.okButton:IsEnabled() then
-            popup.okButton:Click()
-        end
-    end
-    popup.editBox:SetScript("OnEnterPressed", OnEnterPressed)
-
-    local originalWidth = popup:GetWidth()
-    local function OnShow(self)
-        -- Size to match the macro frame by default.
-        popup:SetPoint("TOPLEFT", BindPadFrame, "TOPRIGHT", 0, 0)
-        popup:SetPoint("BOTTOM", BindPadFrame, "BOTTOM", 0, 0)
-        popup:SetWidth(originalWidth)
-
-        -- Clear text selection and move cursor to the end of existing name (when edit-mode)
-        popup.editBox:HighlightText(0,0)
-        popup.editBox:SetCursorPosition(strlen(popup.editBox:GetText()))
-
-        -- Set the initial selection by texture.
-        if popup.selectedIconTexture then
-            popup.iconsFrame:SetSelectionByName(gsub(strupper(popup.selectedIconTexture), "INTERFACE\\ICONS\\", ""))
-        end
-    end
-    popup:SetScript("OnShow", OnShow)
-    popup:SetScript("OnHide", BindPadMacroPopupFrame_OnHide)
-    popup:SetScript("OnOkayClicked", function(...)
-        PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) -- SOUNDKIT.GS_TITLE_OPTION_OK
-        BindPadMacroPopupOkayButton_OnClick(...)
-    end)
-    popup:SetScript("OnCancelClicked", function(...)
-        PlaySound(PlaySoundKitID and "gsTitleOptionEXIT" or 799) -- SOUNDKIT.GS_TITLE_OPTION_EXIT
-        BindPadMacroPopupFrame_CancelEdit(...)
-    end)
-
-    local function OnSelectedIconChanged()
-        popup.selectedIcon = popup.iconsFrame:GetSelectedIcon()
-        popup.selectedIconTexture = nil
-        local _, _, texture = popup.iconsFrame:GetIconInfo(popup.selectedIcon);
-        if texture then
-            BindPadCore.selectedSlot.texture = "INTERFACE\\ICONS\\"..texture
-            BindPadSlot_UpdateState(BindPadCore.selectedSlotButton)
-            BindPadMacroPopupOkayButton_Update()
-        end
-    end
-    popup.iconsFrame:SetScript("OnSelectedIconChanged", OnSelectedIconChanged)
 end
 
 function BindPadCore.SaveBindings(which)
