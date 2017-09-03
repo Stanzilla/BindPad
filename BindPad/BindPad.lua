@@ -110,7 +110,7 @@ function BindPadFrame_OnLoad(self)
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
 
-    GetMacroIcons( MACRO_ICON_FILENAMES );
+    GetMacroIcons(MACRO_ICON_FILENAMES);
 end
 
 function BindPadFrame_OnMouseDown(self, button)
@@ -596,7 +596,7 @@ function BindPadMacroAddButton_OnClick(self)
         BindPadSlot_OnReceiveDrag(self);
     else
         BindPadCore.HideSubFrames();
-        PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) -- SOUNDKIT.GS_TITLE_OPTION_OK
+        PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK)
         BindPadMacroPopupFrame_Open(self);
     end
 end
@@ -1037,7 +1037,7 @@ function BindPadCore.PlaceVirtualIconIntoSlot(id, drag)
     BindPadCore.UpdateMacroText(padSlot);
 
     table.wipe(drag);
-    PlaySound(PlaySoundKitID and "igAbilityIconDrop" or 838) -- SOUNDKIT.IG_ABILITY_ICON_DROP
+    PlaySound(SOUNDKIT.IG_ABILITY_ICON_DROP)
 end
 
 function BindPadCore.CheckCorruptedSlot(padSlot)
@@ -1187,10 +1187,6 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
 
         BindPadCore.DoSaveAllKeys(); -- correct?
         BindPadFrame_OutputText(BINDPAD_TEXT_CREATE_PROFILETAB);
-    end
-
-    if (BindPadCore.GetProfileData().version or 0) < BINDPAD_PROFILE_VERSION252 then
-        BindPadCore.ConvertAllKeyBindingsFor252();
     end
 
     -- Restore all Blizzard's Key Bindings for this spec if possible.
@@ -1457,17 +1453,6 @@ function BindPadCore.InitProfile()
     BindPadCore.character = "PROFILE_"..GetRealmName().."_"..UnitName("player");
     local character = BindPadCore.character;
 
-    -- Savefile version 1.0 and 1.1 are obsolated.
-    if BindPadVars.version == nil or
-        BindPadVars.version < 1.2 then
-        BindPadVars = {
-            tab = BINDPAD_GENERAL_TAB,
-            version = BINDPAD_SAVEFILE_VERSION,
-        };
-        BindPadFrame_OutputText("BindPadVars.version = "..(BindPadVars.version or "nil"));
-        BindPadFrame_OutputText(BINDPAD_TEXT_OBSOLATED);
-    end
-
     if nil == BindPadVars[character] then -- wat?
         BindPadCore.ConvertOldSlotInfo();
     end
@@ -1518,17 +1503,6 @@ function BindPadCore.UpdateMacroText(padSlot)
         BindPadMacro:SetAttribute("*macrotext-"..padSlot.name, padSlot.macrotext);
     else
         return;
-    end
-
-    -- Convert very old format to new format.
-    local newAction = BindPadCore.CreateBindPadMacroAction(padSlot);
-    if padSlot.action ~= newAction then
-        local key = GetBindingKey(padSlot.action);
-        if key then
-            BindPadCore.InnerSetBinding(key, newAction);
-            BindPadCore.SaveBindings(GetCurrentBindingSet());
-        end
-        padSlot.action = newAction;
     end
 end
 
@@ -1924,82 +1898,6 @@ function BindPadCore.DoRestoreAllKeys()
         -- Prepare macro text for every BindPad Macro for this profile.
         BindPadCore.UpdateMacroText(padSlot);
     end
-end
-
-function BindPadCore.ConvertAllKeyBindingsFor252()
-    local profile = BindPadCore.GetProfileData();
-    profile.AllKeyBindings = {};
-    local keys_work = {};
-
-    -- Convert SavedVariables older than BindPad 2.0.0
-    for padSlot in BindPadCore.AllSlotInfoIter() do
-        if TYPE_ITEM ~= padSlot.type then
-            padSlot.linktext = nil;
-        end
-        if padSlot.macrotext ~= nil and padSlot.id then
-            if type(padSlot.id) == "number" then
-                if strfind(padSlot.action, "^CLICK BindPadMacro%d+:") then
-                    -- Save old action value.
-                    padSlot.id = padSlot.action;
-                end
-            else
-                -- Restore the saved value.
-                -- Expecting that UpdateMacroText handles re-binding.
-                padSlot.action = padSlot.id
-            end
-        end
-    end
-
-    for padSlot in BindPadCore.AllSlotInfoIter() do
-        BindPadCore.UpdateMacroText(padSlot);
-    end
-
-    -- Convert keybinding actions older than BindPad 2.2.0
-    if profile.keys ~= nil then
-        for k,v in pairs(profile.keys) do
-            if strfind(k, "^SPELL ") or strfind(k, "^ITEM ") or strfind(k, "^MACRO ") then
-                -- Create new element with converted action string.
-                keys_work["CLICK BindPadKey:"..k] = v;
-            else
-                -- Just copy if not too old format.
-                keys_work[k] = v;
-            end
-        end
-    end
-
-    -- For character specific icons
-    for padSlot in BindPadCore.AllSlotInfoIter() do
-        -- Bring registered key-action pairs
-        -- and swap key and action to create new AllKeyBindings table.
-        local key = keys_work[padSlot.action];
-        if key then
-            profile.AllKeyBindings[key] = padSlot.action;
-        end
-    end
-
-    -- For all BindPad icons including one in general tabs
-    -- Save current key bind if the key is not registered yet.
-    for padSlot in BindPadCore.AllSlotInfoIter() do
-        local key = GetBindingKey(padSlot.action);
-        if key and profile.AllKeyBindings[key] == nil then
-            profile.AllKeyBindings[key] = padSlot.action;
-        end
-    end
-
-    -- For all key bindings of Blizzard's Key Bindings Interface.
-    -- Save current key bind only if the key is not registered yet.
-    for i=1,GetNumBindings() do
-        local command, category, key1, key2 = GetBinding(i);
-        if key1 and profile.AllKeyBindings[key1] == nil then
-            profile.AllKeyBindings[key1] = command;
-        end
-        if key2 and profile.AllKeyBindings[key2] == nil then
-            profile.AllKeyBindings[key2] = command;
-        end
-    end
-
-    profile.keys = nil;
-    profile.version = BINDPAD_PROFILE_VERSION252;
 end
 
 function BindPadCore.InsertBindingTooltip(action)
