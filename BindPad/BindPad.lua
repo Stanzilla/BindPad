@@ -126,7 +126,7 @@ end
 function BindPadFrame_OnEvent(self, event, ...)
     local arg1, arg2 = ...;
     if event == "UPDATE_BINDINGS" then
-        BindPadCore.DoSaveAllKeys();
+        BindPadCore.DoSaveAllKeys(); -- correct?
         BindPadCore.UpdateAllHotkeys();
     elseif event == "ACTIONBAR_SLOT_CHANGED"
         or event == "UPDATE_BONUS_ACTIONBAR"
@@ -594,10 +594,8 @@ end
 function BindPadMacroAddButton_OnClick(self)
     if BindPadCore.CursorHasIcon() then
         BindPadSlot_OnReceiveDrag(self);
-
     else
         BindPadCore.HideSubFrames();
-
         PlaySound(PlaySoundKitID and "gsTitleOptionOK" or 798) -- SOUNDKIT.GS_TITLE_OPTION_OK
         BindPadMacroPopupFrame_Open(self);
     end
@@ -813,6 +811,7 @@ function BindPadProfileTab_OnShow(self)
     else
         self.subIcon:Hide();
     end
+
     if spec3 then
         texture = BindPadCore.GetSpecTexture(spec3);
         self.subIcon2:SetTexture(texture);
@@ -820,6 +819,7 @@ function BindPadProfileTab_OnShow(self)
     else
         self.subIcon2:Hide();
     end
+
     if spec4 then
         texture = BindPadCore.GetSpecTexture(spec4);
         self.subIcon3:SetTexture(texture);
@@ -1156,7 +1156,6 @@ function BindPadCore.ConvertOldSlotInfo()
         end
         BindPadVars[oldCharacter.."_4"] = nil;
     end
-
 end
 
 function BindPadCore.SwitchProfile(newProfileNum, force)
@@ -1186,7 +1185,7 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
     if nil == BindPadVars[character][newProfileNum] then
         BindPadVars[character][newProfileNum] = {};
 
-        BindPadCore.DoSaveAllKeys();
+        BindPadCore.DoSaveAllKeys(); -- correct?
         BindPadFrame_OutputText(BINDPAD_TEXT_CREATE_PROFILETAB);
     end
 
@@ -1222,6 +1221,7 @@ function BindPadCore.PickupSlot(self, id, isOnDragStart)
     if padSlot == nil then
         return;
     end
+
     if self == BindPadCore.selectedSlotButton then
         BindPadCore.HideSubFrames();
     end
@@ -1300,7 +1300,6 @@ end
 function BindPadCore.BindKey(padSlot, keyPressed)
     if not InCombatLockdown() then
         BindPadCore.UnbindSlot(padSlot);
-
         BindPadCore.ManuallySetBinding(keyPressed, padSlot.action);
         BindPadCore.SaveBindings(GetCurrentBindingSet());
     else
@@ -1350,7 +1349,7 @@ end
 function BindPadCore.GetBindingText(name, prefix, returnAbbr)
     local modKeys = GetBindingText(name);
 
-    if ( returnAbbr ) then
+    if returnAbbr then
         modKeys = gsub(modKeys, "CTRL", "c");
         modKeys = gsub(modKeys, "SHIFT", "s");
         modKeys = gsub(modKeys, "ALT", "a");
@@ -1363,7 +1362,7 @@ function BindPadCore.GetBindingText(name, prefix, returnAbbr)
 end
 
 function BindPadFrame_ChangeBindingProfile()
-    if ( GetCurrentBindingSet() == 1 ) then
+    if GetCurrentBindingSet() == 1 then
         LoadBindings(2);
         BindPadCore.SaveBindings(2);
         BindPadFrameCharacterButton:SetChecked(true);
@@ -1393,21 +1392,21 @@ function BindPadFrame_ChangeBindingProfile()
 end
 
 function BindPadCore.ChatEdit_InsertLinkHook(text)
-    if ( not text ) then
+    if not text then
         return;
     end
     local activeWindow = ChatEdit_GetActiveWindow();
-    if ( activeWindow ) then
+    if activeWindow then
         return;
     end
-    if ( BrowseName and BrowseName:IsVisible() ) then
+    if BrowseName and BrowseName:IsVisible() then
         return;
     end
-    if ( MacroFrameText and MacroFrameText:IsVisible() ) then
+    if MacroFrameText and MacroFrameText:IsVisible() then
         return;
     end
 
-    if ( BindPadMacroFrameText and BindPadMacroFrameText:IsVisible() ) then
+    if BindPadMacroFrameText and BindPadMacroFrameText:IsVisible() then
         local _, _, kind, spellid = string.find(text, "^|c%x+|H(%a+):(%d+)[|:]");
 
         if kind == "item" then
@@ -1416,7 +1415,7 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
             local name, rank = GetSpellInfo(spellid);
             text = name;
         end
-        if ( BindPadMacroFrameText:GetText() == "" ) then
+        if BindPadMacroFrameText:GetText() == "" then
             if kind == "item" then
                 if ( GetItemSpell(text) ) then
                     BindPadMacroFrameText:Insert(SLASH_USE1.." "..text);
@@ -1433,7 +1432,6 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
         end
     end
 end
-
 hooksecurefunc("ChatEdit_InsertLink", BindPadCore.ChatEdit_InsertLinkHook);
 
 function BindPadCore.PickupSpellBookItemHook(slot, bookType)
@@ -1470,9 +1468,10 @@ function BindPadCore.InitProfile()
         BindPadFrame_OutputText(BINDPAD_TEXT_OBSOLATED);
     end
 
-    if nil == BindPadVars[character] then
+    if nil == BindPadVars[character] then -- wat?
         BindPadCore.ConvertOldSlotInfo();
     end
+
     if nil == BindPadVars[character].profileForTalentGroup then
         BindPadVars[character].profileForTalentGroup = {};
     end
@@ -1508,19 +1507,15 @@ function BindPadCore.UpdateMacroText(padSlot)
     if TYPE_ITEM == padSlot.type then
         BindPadKey:SetAttribute("*type-ITEM "..padSlot.name, "item");
         BindPadKey:SetAttribute("*item-ITEM "..padSlot.name, padSlot.name);
-
     elseif TYPE_SPELL == padSlot.type then
         local spellName = padSlot.name;
         BindPadKey:SetAttribute("*type-SPELL "..spellName, "spell");
         BindPadKey:SetAttribute("*spell-SPELL "..spellName, spellName);
-
     elseif TYPE_MACRO == padSlot.type then
         BindPadKey:SetAttribute("*type-MACRO "..padSlot.name, "macro");
         BindPadKey:SetAttribute("*macro-MACRO "..padSlot.name, padSlot.name);
-
     elseif TYPE_BPMACRO == padSlot.type then
         BindPadMacro:SetAttribute("*macrotext-"..padSlot.name, padSlot.macrotext);
-
     else
         return;
     end
@@ -1602,19 +1597,16 @@ function BindPadCore.ConvertToBindPadMacro()
         padSlot.type = TYPE_BPMACRO;
         padSlot.linktext = nil;
         padSlot.macrotext = SLASH_USE1.." [mod:SELFCAST,@player][mod:FOCUSCAST,@focus][] "..padSlot.name;
-
     elseif TYPE_SPELL == padSlot.type then
         padSlot.macrotext = SLASH_CAST1.." [mod:SELFCAST,@player][mod:FOCUSCAST,@focus][] "..padSlot.name;
         padSlot.type = TYPE_BPMACRO;
         padSlot.bookType = nil;
         padSlot.rank = nil;
         padSlot.spellid = nil;
-
     elseif TYPE_MACRO == padSlot.type then
         local name, texture, macrotext = GetMacroInfo(padSlot.name);
         padSlot.type = TYPE_BPMACRO;
         padSlot.macrotext = (macrotext or "");
-
     else
         return;
     end
@@ -1628,7 +1620,7 @@ function BindPadCore.ConvertToBindPadMacro()
 end
 
 function BindPadCore.CursorHasIcon()
-    return (GetCursorInfo() or BindPadCore.drag.type)
+    return GetCursorInfo() or BindPadCore.drag.type
 end
 
 function BindPadCore.ClearCursor()
@@ -1666,7 +1658,7 @@ function BindPadCore.GetSpecTexture(specIndex)
         return nil;
     end
     local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex)
-    if ( icon ~= nil ) then
+    if icon ~= nil then
         return icon;
     end
     return "Interface\\Icons\\Ability_Marksmanship";
@@ -1691,7 +1683,6 @@ function BindPadCore.GetTalentSpec(specIndex)
     local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex);
     return name;
 end
-
 
 function BindPadCore.DoList(arg)
     for k,v in pairs(BindPadVars) do
@@ -1751,18 +1742,17 @@ function BindPadCore.DuplicateTable(table)
     return newtable;
 end
 
-
 function BindPadCore.GetMacroIconInfo(index)
-    if ( not index ) then
+    if not index then
         return;
     end
-    if (BindPadCore.HiddenSlot == nil) then
+    if BindPadCore.HiddenSlot == nil then
         BindPadCore.HiddenSlot = CreateFrame("CheckButton", "BindPadHiddenSlot", BindPadFrame, "BindPadSlotTemplate", 100);
     end
 
     local texture = MACRO_ICON_FILENAMES[index];
-    if (texture) then
-        if (type(texture) == "number") then
+    if texture then
+        if type(texture) == "number" then --should stop using texture paths completely
             -- Trying to convert number to the file path string.
             -- Sometimes works. Sometimes doesn't work. As of patch 7.0
             BindPadCore.HiddenSlot.icon:SetTexture(texture);
@@ -1886,6 +1876,7 @@ function BindPadCore.DoRestoreAllKeys()
             end
         end
     end
+
     for i=1,#to_be_removed do
         BindPadCore.InnerSetBinding(to_be_removed[i], nil);
     end
@@ -1958,6 +1949,7 @@ function BindPadCore.ConvertAllKeyBindingsFor252()
             end
         end
     end
+
     for padSlot in BindPadCore.AllSlotInfoIter() do
         BindPadCore.UpdateMacroText(padSlot);
     end
@@ -2026,7 +2018,6 @@ function BindPadCore.InsertBindingTooltip(action)
     end
 end
 
-
 function BindPadCore.GameTooltipSetItemByID(self, itemID)
     BindPadCore.InsertBindingTooltip(concat("ITEM ", GetItemInfo(itemID)));
 end
@@ -2090,6 +2081,7 @@ end
 
 BindPadCore.HotKeyList = {};
 BindPadCore.CreateFrameQueue = {};
+
 function BindPadCore.InitHotKeyList()
     for k, button in pairs(ActionBarButtonEventsFrame.frames) do
         BindPadCore.CreateFrameQueue[button:GetName()] = "ActionBarButtonTemplate";
