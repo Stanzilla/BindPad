@@ -126,8 +126,13 @@ end
 function BindPadFrame_OnEvent(self, event, ...)
     local arg1, arg2 = ...;
     if event == "UPDATE_BINDINGS" then
+        -- BindPad will always save keybindings when something changed
+        -- because current spec can be changed while BindPad addon is disabled.
+        -- If we don't save now, we can lose the new keybind when logout/relogin as other spec.
         BindPadCore.DoSaveAllKeys(); -- correct?
+
         BindPadCore.UpdateAllHotkeys();
+
     elseif event == "ACTIONBAR_SLOT_CHANGED"
         or event == "UPDATE_BONUS_ACTIONBAR"
         or event == "UPDATE_VEHICLE_ACTIONBAR"
@@ -1185,6 +1190,8 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
     if nil == BindPadVars[character][newProfileNum] then
         BindPadVars[character][newProfileNum] = {};
 
+        -- This call to DoSaveAllKeys is nesessary
+        -- Putting current keybindings data into a new profile tab table.
         BindPadCore.DoSaveAllKeys(); -- correct?
         BindPadFrame_OutputText(BINDPAD_TEXT_CREATE_PROFILETAB);
     end
@@ -1454,6 +1461,12 @@ function BindPadCore.InitProfile()
     local character = BindPadCore.character;
 
     if nil == BindPadVars[character] then -- wat?
+        -- This function "BindPadCore.ConvertOldSlotInfo()" is yet another 
+        -- super old profile conversion from the older data format of profile tabs.
+        -- These conversion doesn't refer to the profile version number because 
+        -- BindPad converts a character specific profile data only when 
+        -- player login as that specific character.
+        -- We may remove this function safely now as this is SUPER OLD.
         BindPadCore.ConvertOldSlotInfo();
     end
 
