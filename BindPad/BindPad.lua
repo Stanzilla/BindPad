@@ -1420,7 +1420,7 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
         end
         if BindPadMacroFrameText:GetText() == "" then
             if kind == "item" then
-                if ( GetItemSpell(text) ) then
+                if GetItemSpell(text) then
                     BindPadMacroFrameText:Insert(SLASH_USE1.." "..text);
                 else
                     BindPadMacroFrameText:Insert(SLASH_EQUIP1.." "..text);
@@ -1593,7 +1593,7 @@ function BindPadCore.ConvertToBindPadMacro()
     elseif TYPE_MACRO == padSlot.type then
         local name, texture, macrotext = GetMacroInfo(padSlot.name);
         padSlot.type = TYPE_BPMACRO;
-        padSlot.macrotext = (macrotext or "");
+        padSlot.macrotext = macrotext or "";
     else
         return;
     end
@@ -1614,7 +1614,7 @@ function BindPadCore.ClearCursor()
     local drag = BindPadCore.drag;
     if TYPE_BPMACRO == drag.type then
         ResetCursor();
-        PlaySound(PlaySoundKitID and "igAbilityIconDrop" or 838) -- SOUNDKIT.IG_ABILITY_ICON_DROP
+        PlaySound(SOUNDKIT.IG_ABILITY_ICON_DROP)
     end
     drag.type = nil;
 end
