@@ -30,7 +30,6 @@ local BINDPAD_GENERAL_TAB = 1;
 local BINDPAD_SPECIFIC_1ST_TAB = 2;
 local BINDPAD_SAVEFILE_VERSION = 1.3;
 local BINDPAD_PROFILE_VERSION252 = 252;
--- local BINDPAD_PROFILE_VERSION290 = 290;
 
 local TYPE_ITEM = "ITEM";
 local TYPE_SPELL = "SPELL";
@@ -157,13 +156,15 @@ function BindPadFrame_OutputText(text)
 end
 
 function BindPadFrame_OnShow()
-    if nil == BindPadVars.tab then
+    if not BindPadVars.tab then
         BindPadVars.tab = 1;
     end
+
     if GetCurrentBindingSet() == 1 then
         -- Don't show Character Specific Slots tab at first.
         BindPadVars.tab = 1;
     end
+
     if BindPadVars.tab == 1 then
         BindPadFrameTitleText:SetText(BINDPAD_TITLE);
     else
@@ -255,107 +256,112 @@ function BindPadBindFrame_Update()
 end
 
 function BindPadBindFrame_OnKeyDown(self, keyOrButton)
-    if keyOrButton=="ESCAPE" then
+    if keyOrButton == "ESCAPE" then
         BindPadBindFrame:Hide()
         return
     end
 
-    if ( GetBindingFromClick(keyOrButton) == "SCREENSHOT" ) then
+    if GetBindingFromClick(keyOrButton) == "SCREENSHOT" then
         RunBinding("SCREENSHOT");
         return;
     end
 
     local keyPressed = keyOrButton;
 
-    if ( keyPressed == "UNKNOWN" ) then
+    if keyPressed == "UNKNOWN" then
         return;
     end
 
     -- Convert the mouse button names
-    if ( keyPressed == "LeftButton" ) then
+    if keyPressed == "LeftButton" then
         keyPressed = "BUTTON1";
-    elseif ( keyPressed == "RightButton" ) then
+    elseif keyPressed == "RightButton" then
         keyPressed = "BUTTON2";
-    elseif ( keyPressed == "MiddleButton" ) then
+    elseif keyPressed == "MiddleButton" then
         keyPressed = "BUTTON3";
-    elseif ( keyPressed == "Button4" ) then
+    elseif keyPressed == "Button4" then
         keyPressed = "BUTTON4"
-    elseif ( keyOrButton == "Button5" ) then
+    elseif keyOrButton == "Button5" then
         keyPressed = "BUTTON5"
-    elseif ( keyPressed == "Button6" ) then
+    elseif keyPressed == "Button6" then
         keyPressed = "BUTTON6"
-    elseif ( keyOrButton == "Button7" ) then
+    elseif keyOrButton == "Button7" then
         keyPressed = "BUTTON7"
-    elseif ( keyPressed == "Button8" ) then
+    elseif keyPressed == "Button8" then
         keyPressed = "BUTTON8"
-    elseif ( keyOrButton == "Button9" ) then
+    elseif keyOrButton == "Button9" then
         keyPressed = "BUTTON9"
-    elseif ( keyPressed == "Button10" ) then
+    elseif keyPressed == "Button10" then
         keyPressed = "BUTTON10"
-    elseif ( keyOrButton == "Button11" ) then
+    elseif keyOrButton == "Button11" then
         keyPressed = "BUTTON11"
-    elseif ( keyPressed == "Button12" ) then
+    elseif keyPressed == "Button12" then
         keyPressed = "BUTTON12"
-    elseif ( keyOrButton == "Button13" ) then
+    elseif keyOrButton == "Button13" then
         keyPressed = "BUTTON13"
-    elseif ( keyPressed == "Button14" ) then
+    elseif keyPressed == "Button14" then
         keyPressed = "BUTTON14"
-    elseif ( keyOrButton == "Button15" ) then
+    elseif keyOrButton == "Button15" then
         keyPressed = "BUTTON15"
-    elseif ( keyPressed == "Button16" ) then
+    elseif keyPressed == "Button16" then
         keyPressed = "BUTTON16"
-    elseif ( keyOrButton == "Button17" ) then
+    elseif keyOrButton == "Button17" then
         keyPressed = "BUTTON17"
-    elseif ( keyPressed == "Button18" ) then
+    elseif keyPressed == "Button18" then
         keyPressed = "BUTTON18"
-    elseif ( keyOrButton == "Button19" ) then
+    elseif keyOrButton == "Button19" then
         keyPressed = "BUTTON19"
-    elseif ( keyPressed == "Button20" ) then
+    elseif keyPressed == "Button20" then
         keyPressed = "BUTTON20"
-    elseif ( keyOrButton == "Button21" ) then
+    elseif keyOrButton == "Button21" then
         keyPressed = "BUTTON21"
-    elseif ( keyPressed == "Button22" ) then
+    elseif keyPressed == "Button22" then
         keyPressed = "BUTTON22"
-    elseif ( keyOrButton == "Button23" ) then
+    elseif keyOrButton == "Button23" then
         keyPressed = "BUTTON23"
-    elseif ( keyPressed == "Button24" ) then
+    elseif keyPressed == "Button24" then
         keyPressed = "BUTTON24"
-    elseif ( keyOrButton == "Button25" ) then
+    elseif keyOrButton == "Button25" then
         keyPressed = "BUTTON25"
-    elseif ( keyPressed == "Button26" ) then
+    elseif keyPressed == "Button26" then
         keyPressed = "BUTTON26"
-    elseif ( keyOrButton == "Button27" ) then
+    elseif keyOrButton == "Button27" then
         keyPressed = "BUTTON27"
-    elseif ( keyPressed == "Button28" ) then
+    elseif keyPressed == "Button28" then
         keyPressed = "BUTTON28"
-    elseif ( keyOrButton == "Button29" ) then
+    elseif keyOrButton == "Button29" then
         keyPressed = "BUTTON29"
-    elseif ( keyPressed == "Button30" ) then
+    elseif keyPressed == "Button30" then
         keyPressed = "BUTTON30"
-    elseif ( keyOrButton == "Button31" ) then
+    elseif keyOrButton == "Button31" then
         keyPressed = "BUTTON31"
     end
 
-    if ( keyPressed == "LSHIFT" or
+    if keyPressed == "LSHIFT" or
         keyPressed == "RSHIFT" or
         keyPressed == "LCTRL" or
         keyPressed == "RCTRL" or
         keyPressed == "LALT" or
-        keyPressed == "RALT" ) then
+        keyPressed == "RALT" then
         return;
     end
-    if ( IsShiftKeyDown() ) then
+
+    if IsShiftKeyDown() then
         keyPressed = "SHIFT-"..keyPressed
     end
-    if ( IsControlKeyDown() ) then
+
+    if IsControlKeyDown() then
         keyPressed = "CTRL-"..keyPressed
     end
-    if ( IsAltKeyDown() ) then
+
+    if IsAltKeyDown() then
         keyPressed = "ALT-"..keyPressed
     end
-    if ( keyPressed == "BUTTON1" or keyPressed == "BUTTON2" ) then
+
+    if keyPressed == "BUTTON1" or keyPressed == "BUTTON2" then
         return;
     end
+
     if not keyPressed then
         return;
     end
@@ -365,7 +371,7 @@ function BindPadBindFrame_OnKeyDown(self, keyOrButton)
         local padSlot = BindPadCore.selectedSlot;
         local oldAction = GetBindingAction(keyPressed)
 
-        if oldAction~="" and oldAction ~= padSlot.action then
+        if oldAction ~= "" and oldAction ~= padSlot.action then
             local keyText = BindPadCore.GetBindingText(keyPressed, "KEY_");
             local text = format(BINDPAD_TEXT_CONFIRM_BINDING, keyText, oldAction, keyText, padSlot.action);
             answer = BindPadCore.ShowDialog(text);
@@ -405,6 +411,7 @@ function BindPadSlot_OnClick(self, button, down)
         else
             BindPadMacroFrame_Open(self);
         end
+
         return;
     end
 
@@ -471,7 +478,7 @@ function BindPadSlot_OnEnter(self)
     BindPadCore.UpdateCursor();
 
     local padSlot = BindPadCore.GetSlotInfo(self:GetID());
-    if padSlot == nil then
+    if not padSlot then
         return;
     end
     if BindPadCore.CheckCorruptedSlot(padSlot) then
@@ -570,7 +577,7 @@ function BindPadMacroPopupFrame_Open(self)
     BindPadMacroPopup_oldPadSlot.texture = padSlot.texture;
     BindPadMacroPopup_oldPadSlot.type = padSlot.type;
 
-    if nil == padSlot.type then
+    if not padSlot.type then
         newFlag = true;
 
         padSlot.type = TYPE_BPMACRO;
@@ -631,16 +638,16 @@ function BindPadMacroPopupFrame_Update(self)
         macroPopupButton = _G["BindPadMacroPopupButton"..i];
         index = (macroPopupOffset * NUM_ICONS_PER_ROW) + i;
         texture = BindPadCore.GetMacroIconInfo(index);
-        if ( index <= numMacroIcons and texture ) then
+        if index <= numMacroIcons and texture then
             macroPopupIcon:SetTexture(texture);
             macroPopupButton:Show();
         else
             macroPopupIcon:SetTexture("");
             macroPopupButton:Hide();
         end
-        if ( BindPadMacroPopupFrame.selectedIcon and (index == BindPadMacroPopupFrame.selectedIcon) ) then
+        if BindPadMacroPopupFrame.selectedIcon and index == BindPadMacroPopupFrame.selectedIcon then
             macroPopupButton:SetChecked(1);
-        elseif ( BindPadMacroPopupFrame.selectedIconTexture ==  texture ) then
+        elseif BindPadMacroPopupFrame.selectedIconTexture ==  texture then
             macroPopupButton:SetChecked(1);
         else
             macroPopupButton:SetChecked(nil);
@@ -980,7 +987,6 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
             -- padSlot.macrotext = "/cancelform\n"..SLASH_SCRIPT1.." C_MountJournal.Summon(0)";
 
             -- A very hacky workaround to all of the above.
-            --	 padSlot.macrotext = "/cancelform [worn:Leather]\n"..SLASH_SCRIPT1.." C_MountJournal.Summon(0)";
             padSlot.macrotext = "/cancelform [worn:Leather]\n"..SLASH_SCRIPT1.." C_MountJournal.SummonByID(0)";
 
         else
@@ -1079,7 +1085,7 @@ function BindPadCore.CheckCorruptedSlot(padSlot)
 end
 
 function BindPadCore.GetCurrentProfileNum()
-    if nil == BindPadCore.profileNum then
+    if not BindPadCore.profileNum then
         BindPadCore.profileNum = 1;
     end
     return BindPadCore.profileNum;
@@ -1087,10 +1093,10 @@ end
 
 function BindPadCore.GetProfileForSpec(specIndex)
     local character = BindPadCore.character;
-    if nil == character then
+    if not character then
         return nil;
     end
-    if nil == BindPadVars[character].profileForTalentGroup[specIndex] then
+    if not BindPadVars[character].profileForTalentGroup[specIndex] then
         BindPadVars[character].profileForTalentGroup[specIndex] = specIndex;
     end
     return BindPadVars[character].profileForTalentGroup[specIndex];
@@ -1099,9 +1105,10 @@ end
 function BindPadCore.GetSpecsForProfile(profileNum)
     local spec1, spec2, spec3, spec4;
     local character = BindPadCore.character;
-    if nil == character then
+    if not character then
         return nil;
     end
+
     local specIndex = GetSpecialization();
     if BindPadVars[character].profileForTalentGroup[specIndex] == profileNum then
         spec1 = specIndex;
@@ -1120,12 +1127,13 @@ function BindPadCore.GetSpecsForProfile(profileNum)
             end
         end
     end
+
     return spec1, spec2, spec3, spec4;
 end
 
 function BindPadCore.GetProfileData()
     local character = BindPadCore.character;
-    if nil == character then
+    if not character then
         return nil;
     end
     local profileNum = BindPadCore.GetCurrentProfileNum();
@@ -1177,7 +1185,7 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
     BindPadCore.HideSubFrames();
 
     local character = BindPadCore.character;
-    if nil == character then
+    if not character then
         return;
     end
 
@@ -1187,12 +1195,12 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
     BindPadVars[character].profileForTalentGroup[specIndex] = newProfileNum;
 
     -- Create new profile if not available
-    if nil == BindPadVars[character][newProfileNum] then
+    if not BindPadVars[character][newProfileNum] then
         BindPadVars[character][newProfileNum] = {};
 
         -- This call to DoSaveAllKeys is nesessary
         -- Putting current keybindings data into a new profile tab table.
-        BindPadCore.DoSaveAllKeys(); -- correct?
+        BindPadCore.DoSaveAllKeys();
         BindPadFrame_OutputText(BINDPAD_TEXT_CREATE_PROFILETAB);
     end
 
@@ -1256,10 +1264,10 @@ function BindPadCore.PickupSlot(self, id, isOnDragStart)
         drag.isForAllCharacters = padSlot.isForAllCharacters;
 
         BindPadCore.UpdateCursor();
-        PlaySound(PlaySoundKitID and "igAbilityIconPickup" or 834) -- SOUNDKIT.IG_ABILITY_OPEN
+        PlaySound(SOUNDKIT.IG_ABILITY_OPEN)
     end
 
-    if (not ( isOnDragStart and IsModifierKeyDown() )) then
+    if not isOnDragStart and IsModifierKeyDown() then
         -- Disable BindPadMacro (It will be re-enabled when placed on a slot.)
         BindPadCore.DeleteBindPadMacroID(padSlot);
         -- Empty the original slot
@@ -1460,17 +1468,7 @@ function BindPadCore.InitProfile()
     BindPadCore.character = "PROFILE_"..GetRealmName().."_"..UnitName("player");
     local character = BindPadCore.character;
 
-    if nil == BindPadVars[character] then -- wat?
-        -- This function "BindPadCore.ConvertOldSlotInfo()" is yet another 
-        -- super old profile conversion from the older data format of profile tabs.
-        -- These conversion doesn't refer to the profile version number because 
-        -- BindPad converts a character specific profile data only when 
-        -- player login as that specific character.
-        -- We may remove this function safely now as this is SUPER OLD.
-        BindPadCore.ConvertOldSlotInfo();
-    end
-
-    if nil == BindPadVars[character].profileForTalentGroup then
+    if not BindPadVars[character].profileForTalentGroup then
         BindPadVars[character].profileForTalentGroup = {};
     end
 
@@ -1528,7 +1526,7 @@ function BindPadCore.NewBindPadMacroName(padSlot, name)
                 and curSlot.name ~= nil
                 and strlower(name) == strlower(curSlot.name)) then
                 local first, last, num = strfind(name, "(%d+)$");
-                if nil == num then
+                if not num then
                     name = name.."_2";
                 else
                     name = strsub(name, 0, first - 1)..(num+1);
@@ -1620,7 +1618,7 @@ function BindPadCore.ClearCursor()
 end
 
 function BindPadCore.PlayerTalentUpdate()
-    -- Reset cache for morhing spells
+    -- Reset cache for morphing spells
     BindPadCore.morphingSpellCache = nil;
 
     local newActiveSpec = GetSpecialization();
@@ -1766,7 +1764,7 @@ function BindPadCore.DoSaveAllKeys()
     if BindPadCore.ChangingKeyBindings then
         return;
     end
-    if nil == BindPadCore.character then
+    if not BindPadCore.character then
         return;
     end
     local profile = BindPadCore.GetProfileData();
@@ -1882,9 +1880,6 @@ function BindPadCore.DoRestoreAllKeys()
     end
 
     BindPadCore.ChangingKeyBindings = false;
-
-    -- 2.7.11: Actually no need to save bindings here because BindPad will restore all keybindings every login.
-    --  BindPadCore.SaveBindings(GetCurrentBindingSet());
 
     -- Don't do it twice.
     local ticker = BindPadCore.ticker_SaveBindings;
@@ -2185,13 +2180,13 @@ function BindPadCore.GetTabInfo(tab)
     else
         local character = BindPadCore.character;
         local profileNum = BindPadCore.GetCurrentProfileNum();
-        if nil == BindPadVars[character][profileNum] then
+        if not BindPadVars[character][profileNum] then
             BindPadVars[character][profileNum] = {};
         end
         local profile = BindPadVars[character][profileNum];
 
         local tabname = "CharacterSpecificTab"..(tab - BINDPAD_GENERAL_TAB);
-        if nil == profile[tabname] then
+        if not profile[tabname] then
             profile[tabname] = {};
             for newid = 1, BINDPAD_MAXSLOTS_DEFAULT do
                 local oldid = newid + (tab-2) * BINDPAD_MAXSLOTS_DEFAULT;
@@ -2209,7 +2204,7 @@ function BindPadCore.GetTabInfo(tab)
 end
 
 function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
-    if nil == BindPadCore.character then
+    if not BindPadCore.character then
         BindPadFrame_OutputText("DEBUG: Something wrong.  Please report this message to the author of BindPad.");
         return nil;
     end
@@ -2221,7 +2216,7 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
     end
 
     local tabInfo = BindPadCore.GetTabInfo(tab);
-    if nil == tabInfo[id] then
+    if not tabInfo[id] then
         if newFlag then
             tabInfo[id] = {};
         end
@@ -2269,7 +2264,7 @@ function BindPadCore.SaveBindings(which)
 end
 
 function BindPadCore.GetBaseForMorphingSpell(spellAction)
-    if nil == BindPadCore.morphingSpellCache then
+    if not BindPadCore.morphingSpellCache then
         BindPadCore.morphingSpellCache = {};
         local i;
         local bookType = BOOKTYPE_SPELL;
