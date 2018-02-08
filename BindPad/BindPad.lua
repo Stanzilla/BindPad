@@ -1465,40 +1465,46 @@ function BindPadCore.InitBindPadOnce(event)
 end
 
 function BindPadCore.InitProfile()
-    BindPadCore.character = "PROFILE_"..GetRealmName().."_"..UnitName("player");
-    local character = BindPadCore.character;
+    BindPadCore.character = "PROFILE_"..GetRealmName().."_"..UnitName("player")
+    local character = BindPadCore.character
 
-    if not BindPadVars[character].profileForTalentGroup then
-        BindPadVars[character].profileForTalentGroup = {};
+    if not BindPadVars[character] then
+        local profileNum = BindPadCore.GetCurrentProfileNum()
+        BindPadVars[character] = {}
+        BindPadVars[character][profileNum] = {}
     end
 
-    local newActiveTalentGroup = GetSpecialization();
+    if not BindPadVars[character].profileForTalentGroup then
+        BindPadVars[character].profileForTalentGroup = {}
+    end
+
+    local newActiveTalentGroup = GetSpecialization()
     local profileNum = BindPadCore.GetProfileForSpec(newActiveTalentGroup)
 
     -- Make sure profileNum tab is set for current talent group.
-    BindPadCore.SwitchProfile(profileNum, true);
+    BindPadCore.SwitchProfile(profileNum, true)
 
     -- Initialize activeTalentGroup variable
-    BindPadCore.activeTalentGroup = newActiveTalentGroup;
+    BindPadCore.activeTalentGroup = newActiveTalentGroup
 
-    BindPadMacro:SetAttribute("*type*", "macro");
-    BindPadKey:SetAttribute("*checkselfcast*", true);
-    BindPadKey:SetAttribute("*checkfocuscast*", true);
+    BindPadMacro:SetAttribute("*type*", "macro")
+    BindPadKey:SetAttribute("*checkselfcast*", true)
+    BindPadKey:SetAttribute("*checkfocuscast*", true)
 
-    BindPadCore.SetTriggerOnKeydown();
+    BindPadCore.SetTriggerOnKeydown()
 
     -- HACK: Making sure BindPadMacroFrame has UIPanelLayout defined.
     -- If we don't do this at the init, ShowUIPanel() may fail in combat.
-    GetUIPanelWidth(BindPadMacroFrame);
-
+    GetUIPanelWidth(BindPadMacroFrame)
     -- Set current version number
-    BindPadVars.version = BINDPAD_SAVEFILE_VERSION;
+    BindPadVars.version = BINDPAD_SAVEFILE_VERSION
 end
 
 function BindPadCore.UpdateMacroText(padSlot)
     if padSlot == nil then
         return;
     end
+
     BindPadCore.CheckCorruptedSlot(padSlot);
     if TYPE_ITEM == padSlot.type then
         BindPadKey:SetAttribute("*type-ITEM "..padSlot.name, "item");
