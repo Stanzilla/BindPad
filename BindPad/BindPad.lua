@@ -5,6 +5,8 @@ BindPad Addon for World of Warcraft
 Author: Tageshi
 
 --]]
+-- luacheck: globals BindPadFrame BindPadFrame_Toggle BindPad_SlashCmd BindPadFrame_OutputText BINDPAD_TEXT_USAGE BindPadSlot_OnReceiveDrag BindPadSlot_UpdateState
+
 local _, addon = ...
 
 local function concat(arg1, arg2)
@@ -146,7 +148,7 @@ function BindPadFrame_OnEvent(self, event, ...)
         BindPadCore.PlayerTalentUpdate();
     elseif event == "CVAR_UPDATE" then
         BindPadCore.CVAR_UPDATE(arg1, arg2);
-    elseif event == "ADDON_LOADED" and arg1 == addon_name then
+    elseif event == "ADDON_LOADED" and arg1 == addon then
         BindPadFrame_OutputText(event..":"..arg1);
     end
 end
@@ -1088,6 +1090,7 @@ function BindPadCore.GetCurrentProfileNum()
     if not BindPadCore.profileNum then
         BindPadCore.profileNum = 1;
     end
+
     return BindPadCore.profileNum;
 end
 
@@ -1099,12 +1102,14 @@ function BindPadCore.GetProfileForSpec(specIndex)
     if not BindPadVars[character].profileForTalentGroup[specIndex] then
         BindPadVars[character].profileForTalentGroup[specIndex] = specIndex;
     end
+
     return BindPadVars[character].profileForTalentGroup[specIndex];
 end
 
 function BindPadCore.GetSpecsForProfile(profileNum)
     local spec1, spec2, spec3, spec4;
     local character = BindPadCore.character;
+
     if not character then
         return nil;
     end
@@ -1672,6 +1677,7 @@ function BindPadCore.GetTalentSpec(specIndex)
         return "";
     end
     local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex);
+
     return name;
 end
 
