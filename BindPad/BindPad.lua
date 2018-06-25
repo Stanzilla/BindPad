@@ -6,6 +6,7 @@ Author: Tageshi
 
 --]]
 -- luacheck: globals BindPadFrame BindPadFrame_Toggle BindPad_SlashCmd BindPadFrame_OutputText BINDPAD_TEXT_USAGE BindPadSlot_OnReceiveDrag BindPadSlot_UpdateState
+-- luacheck: globals BindPadKey BindPadMacro BindPadDialogFrame BindPadMacroFrameText BindPadBindFrameAction BindPadBindFrameKey BindPadMacroPopupFrame
 
 local _, addon = ...
 
@@ -64,6 +65,7 @@ BindPadCore = {
     currentkeybindings = {};
     eventProc = {};
 };
+
 local BindPadCore = BindPadCore;
 
 function BindPadFrame_Toggle()
@@ -439,6 +441,7 @@ function BindPadSlot_OnDragStart(self)
     if not BindPadCore.CanPickupSlot(self) then
         return;
     end
+
     BindPadCore.PickupSlot(self, self:GetID(), true);
     BindPadSlot_UpdateState(self);
 end
@@ -447,6 +450,7 @@ function BindPadSlot_OnReceiveDrag(self)
     if self == BindPadCore.selectedSlotButton then
         BindPadCore.HideSubFrames();
     end
+
     if not BindPadCore.CanPickupSlot(self) then
         return;
     end
@@ -480,12 +484,15 @@ function BindPadSlot_OnEnter(self)
     BindPadCore.UpdateCursor();
 
     local padSlot = BindPadCore.GetSlotInfo(self:GetID());
+
     if not padSlot then
         return;
     end
+
     if BindPadCore.CheckCorruptedSlot(padSlot) then
         return;
     end
+
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
 
     if TYPE_ITEM == padSlot.type then
@@ -552,7 +559,6 @@ function BindPadSlot_UpdateState(self)
         else
             self.border:Hide();
         end
-
     else
         self.icon:Hide();
         self.addbutton:Show();
@@ -895,7 +901,6 @@ function BindPadProfileTab_OnEnter(self, motion)
     GameTooltip:Show();
 end
 
-
 --
 -- BindPadCore:  A set of core functions
 --
@@ -1145,35 +1150,6 @@ function BindPadCore.GetProfileData()
     local profile = BindPadVars[character][profileNum];
 
     return profile;
-end
-
-function BindPadCore.ConvertOldSlotInfo()
-    local oldCharacter = GetRealmName().."_"..UnitName("player");
-    local character = BindPadCore.character;
-
-    local profileNum = BindPadCore.GetCurrentProfileNum();
-
-    BindPadVars[character] = {};
-    BindPadVars[character][profileNum] = {};
-
-    if nil ~= BindPadVars[oldCharacter] then
-        for i = 1, BINDPAD_MAXSLOTS_DEFAULT do
-            BindPadVars[character][profileNum][i] = BindPadVars[oldCharacter][i];
-        end
-        BindPadVars[oldCharacter] = nil;
-    end
-    if nil ~= BindPadVars[oldCharacter.."_3"] then
-        for i = 1, BINDPAD_MAXSLOTS_DEFAULT do
-            BindPadVars[character][profileNum][i+BINDPAD_MAXSLOTS_DEFAULT] = BindPadVars[oldCharacter.."_3"][i];
-        end
-        BindPadVars[oldCharacter.."_3"] = nil;
-    end
-    if nil ~= BindPadVars[oldCharacter.."_4"] then
-        for i = 1, BINDPAD_MAXSLOTS_DEFAULT do
-            BindPadVars[character][profileNum][i+2*BINDPAD_MAXSLOTS_DEFAULT] = BindPadVars[oldCharacter.."_4"][i];
-        end
-        BindPadVars[oldCharacter.."_4"] = nil;
-    end
 end
 
 function BindPadCore.SwitchProfile(newProfileNum, force)
@@ -1818,6 +1794,7 @@ function BindPadCore.DoRestoreAllKeys()
         -- Initialize keyBindings table if none available.
         BindPadCore.DoSaveAllKeys();
     end
+
     if BindPadVars.GeneralKeyBindings == nil then
         BindPadVars.GeneralKeyBindings = {};
     end
@@ -1826,8 +1803,9 @@ function BindPadCore.DoRestoreAllKeys()
     for k,v in pairs(profile.AllKeyBindings) do
         count = count + 1;
     end
+
     if count < 10 then
-        BindPadFrame_OutputText("DEBUG: Something wrong.  profile.AllKeyBindings is most likely broken.");
+        BindPadFrame_OutputText("DEBUG: Something wrong. profile.AllKeyBindings is most likely broken.");
         return;
     end
 
@@ -2194,8 +2172,8 @@ function BindPadCore.GetTabInfo(tab)
         if BindPadVars.numSlot == nil then
             BindPadVars.numSlot = BINDPAD_MAXSLOTS_DEFAULT;
         end
-        return BindPadVars;
 
+        return BindPadVars;
     else
         local character = BindPadCore.character;
         local profileNum = BindPadCore.GetCurrentProfileNum();
@@ -2227,9 +2205,11 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
         BindPadFrame_OutputText("DEBUG: Something wrong.  Please report this message to the author of BindPad.");
         return nil;
     end
+
     if tab == nil then
         tab = 1;
     end
+
     if id == nil then
         return nil;
     end
@@ -2244,6 +2224,7 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
             tabInfo[id] = nil;
         end
     end
+
     return tabInfo[id];
 end
 
@@ -2259,6 +2240,7 @@ function BindPadCore.AllSlotInfoIter()
             end
         end
     end
+
     return coroutine.wrap(f);
 end
 
