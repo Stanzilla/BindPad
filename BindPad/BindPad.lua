@@ -2119,14 +2119,21 @@ end
 
 function BindPadCore.CreateFrameHook(frameType, frameName, parentFrame, inheritsFrame, id)
     if frameType == "CheckButton" and inheritsFrame then
-        if inheritsFrame == "ActionBarButtonTemplate" then
-            BindPadCore.CreateFrameQueue[frameName] = "ActionBarButtonTemplate";
-        end
-        if string.find(inheritsFrame, "SecureActionButtonTemplate%s*,%s*ActionButtonTemplate") then
-            BindPadCore.CreateFrameQueue[frameName] = "LibActionButton";
+        if frameName then
+            if frameName:match("$parent") and parentFrame:GetName() then
+                frameName = frameName:gsub("$parent", parentFrame:GetName())
+            end
+            if not _G[frameName] then return end
+            if inheritsFrame == "ActionBarButtonTemplate" then
+                BindPadCore.CreateFrameQueue[frameName] = "ActionBarButtonTemplate";
+            end
+            if string.find(inheritsFrame, "SecureActionButtonTemplate%s*,%s*ActionButtonTemplate") then
+                BindPadCore.CreateFrameQueue[frameName] = "LibActionButton";
+            end
         end
     end
 end
+hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
 hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
 
 BindPadCore.useBindPadSlot = 0;
