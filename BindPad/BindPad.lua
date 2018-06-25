@@ -2112,7 +2112,6 @@ function BindPadCore.CreateFrameHook(frameType, frameName, parentFrame, inherits
     end
 end
 hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
-hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
 
 BindPadCore.useBindPadSlot = 0;
 function BindPadCore.CreateBindPadSlot(usenum)
