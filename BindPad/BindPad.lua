@@ -1247,8 +1247,7 @@ function BindPadCore.PickupSlot(self, id, isOnDragStart)
         BindPadCore.UpdateCursor();
         PlaySound(SOUNDKIT.IG_ABILITY_OPEN)
     end
-
-    if not isOnDragStart and IsModifierKeyDown() then
+    if (not ( isOnDragStart and IsModifierKeyDown() )) then
         -- Disable BindPadMacro (It will be re-enabled when placed on a slot.)
         BindPadCore.DeleteBindPadMacroID(padSlot);
         -- Empty the original slot
