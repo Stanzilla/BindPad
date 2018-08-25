@@ -1501,6 +1501,19 @@ function BindPadCore.UpdateMacroText(padSlot)
     else
         return;
     end
+
+    -- !!!!! It's NOT old file conversion.
+    -- Update string of padSlot.action
+    -- And then update a keybinding for the padSlot.action.
+    local newAction = BindPadCore.CreateBindPadMacroAction(padSlot);
+    if padSlot.action ~= newAction then
+       local key = GetBindingKey(padSlot.action);
+       if key then
+           BindPadCore.InnerSetBinding(key, newAction);
+           BindPadCore.SaveBindings(GetCurrentBindingSet());
+       end
+       padSlot.action = newAction;
+    end
 end
 
 function BindPadCore.NewBindPadMacroName(padSlot, name)
