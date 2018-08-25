@@ -188,6 +188,20 @@ http://www.curse.com/addons/wow/bind-pad
 -------------------------------------------------------------------------
 
 
+Version 2.8.7
+- Fixed bug: Changing name for a BindPad Macro broke the keybind.
+  (Thanks to xalcon for reporting this!)
+
+
+Version 2.8.6
+- Fixed bug: Couldn't drag and drop itons.
+  (Thank you Stanzilla!)
+
+
+Version 2.8.5
+- Update TOC for Patch 8.0
+  (Thank you Stanzilla!)
+
 Version 2.8.4
 - Stanzilla's quick fix.
   Update TOC for Patch 7.3
