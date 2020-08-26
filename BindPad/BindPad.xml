@@ -745,7 +745,7 @@
             </OnHide>
         </Scripts>
     </Frame>
-    <Button name="BindPadBindFrame" toplevel="true" parent="UIParent" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" enableKeyboard="true">
+    <Button name="BindPadBindFrame" toplevel="true" parent="UIParent" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" enableKeyboard="true" inherits="BackdropTemplate">
         <Size>
             <AbsDimension x="600" y="200" />
         </Size>
@@ -756,17 +756,10 @@
                 </Offset>
             </Anchor>
         </Anchors>
-        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-            <BackgroundInsets>
-                <AbsInset left="11" right="12" top="12" bottom="11" />
-            </BackgroundInsets>
-            <TileSize>
-                <AbsValue val="32" />
-            </TileSize>
-            <EdgeSize>
-                <AbsValue val="32" />
-            </EdgeSize>
-        </Backdrop>
+        <KeyValues>
+            <KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
+            <KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+        </KeyValues>
         <Layers>
             <Layer level="ARTWORK">
                 <Texture name="$parentHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
@@ -900,7 +893,7 @@
             </CheckButton>
         </Frames>
         <Scripts>
-            <OnLoad>
+            <OnLoad inherit="prepend">
                 self:RegisterForClicks("AnyUp")
             </OnLoad>
             <OnHide>
@@ -1485,7 +1478,7 @@
                     </OnClick>
                 </Scripts>
             </Button>
-            <Frame name="BindPadMacroFrameTextBackground">
+            <Frame name="BindPadMacroFrameTextBackground" inherits="BackdropTemplate">
                 <Size>
                     <AbsDimension x="322" y="251" />
                 </Size>
@@ -1496,23 +1489,11 @@
                         </Offset>
                     </Anchor>
                 </Anchors>
-                <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-                    <EdgeSize>
-                        <AbsValue val="16" />
-                    </EdgeSize>
-                    <TileSize>
-                        <AbsValue val="16" />
-                    </TileSize>
-                    <BackgroundInsets>
-                        <AbsInset left="5" right="5" top="5" bottom="5" />
-                    </BackgroundInsets>
-                </Backdrop>
-                <Scripts>
-                    <OnLoad>
-                        self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b)
-                        self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b)
-                    </OnLoad>
-                </Scripts>
+                <KeyValues>
+                    <KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+                    <KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+                    <KeyValue key="backdropBorderColor" value="TOOLTIP_DEFAULT_COLOR" type="global"/>
+                </KeyValues>
             </Frame>
             <Button name="BindPadMacroFrameEditButton" inherits="BindPadUIPanelButtonTemplate" text="CHANGE_MACRO_NAME_ICON">
                 <Size>
@@ -1611,7 +1592,7 @@
             </OnMouseWheel>
         </Scripts>
     </Frame>
-    <Frame name="BindPadDialogFrame" parent="UIParent" toplevel="true" enableKeyboard="true" enableMouse="true" frameStrata="DIALOG" hidden="true">
+    <Frame name="BindPadDialogFrame" parent="UIParent" toplevel="true" enableKeyboard="true" enableMouse="true" frameStrata="DIALOG" hidden="true" inherits="BackdropTemplate">
         <Size>
             <AbsDimension x="420" y="72" />
         </Size>
@@ -1622,17 +1603,10 @@
                 </Offset>
             </Anchor>
         </Anchors>
-        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-            <BackgroundInsets>
-                <AbsInset left="11" right="12" top="12" bottom="11" />
-            </BackgroundInsets>
-            <TileSize>
-                <AbsValue val="32" />
-            </TileSize>
-            <EdgeSize>
-                <AbsValue val="32" />
-            </EdgeSize>
-        </Backdrop>
+        <KeyValues>
+            <KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
+            <KeyValue key="backdropColor" value="TOOLTIP_DEFAULT_BACKGROUND_COLOR" type="global"/>
+        </KeyValues>
         <Layers>
             <Layer level="ARTWORK">
                 <FontString name="$parentText" parentKey="text" inherits="GameFontHighlight">

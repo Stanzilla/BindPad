@@ -1,7 +1,8 @@
 # BindPad
+
 by Tageshi
 
-## WHAT IS "BindPad"?
+## WHAT IS "BindPad"
 
 BindPad is an addon to make key bindings for spells, items, and macros.
 You no longer need actionbar slots just to make key bindings for your macros etc.
@@ -9,7 +10,7 @@ You no longer need actionbar slots just to make key bindings for your macros etc
 The BindPad addon provides many icon slots in its frame. You can drag and drop
 anything into one of these slots, and click the slot to set key bindings.
 
-## HOW TO USE "BindPad"?
+## HOW TO USE "BindPad"
 
 1. Type /bindpad or /bp to display the BindPad frame.
 (Also you can find a `Toggle BindPad` key binding command in the standard
@@ -34,11 +35,12 @@ Note that key bindings itself will not be unbinded when you delete the icon.
 To unbind it, click the icon and click the `Unbind` button on the dialog window.
 Also you can simply override key bindings with different ones.
 
-
 ## HOW TO USE TABS
 
 ----
+
 ### SLOT TABS
+
 ----
 
 There are four tabs called slot tabs at the top of the BindPad frame:
@@ -51,12 +53,13 @@ and current spec.
 * [2] and [3] (aka. 2nd and 3rd character specific slots) will act
 in the same way as `Character Specific` slots.
 
-
 Note that you can only use the `Character Specific` tab after clicking
 the `Character Specific Key Bindings` checkbox.
 
 ----
+
 ### PROFILE TABS
+
 ----
 
 There are another three tabs on the side of BindPad frame.
@@ -74,10 +77,11 @@ BindPad will automatically show the `Character Specific` slots tab of
 the specified profile.
 
 ----
-### CAN I SWITCH PROFILE IN COMBAT? ON STANCE CHANGE?
+
+### CAN I SWITCH PROFILE IN COMBAT? ON STANCE CHANGE
+
 ----
 No, you cannot.
-
 
 If you need different skills bound for different stances/forms,
 simply use the stance condition to decide on what skill to use.
@@ -95,10 +99,10 @@ Druid example: /cast [stance:1] Bash; [nostance:1] Healing Touch
 [stance:4] = Travel, [stance:5] = Tree/Moonkin if available else Flight,
 [stance:6] = Flight if Tree/Moonkin is not available.
 
- 
-
 ----
-### "You want to convert this icon into a BINDPAD MACRO?"... What?
+
+### "You want to convert this icon into a BINDPAD MACRO?"... What
+
 ----
 
 "BindPad Macro" is a new feature from BindPad version 1.8.0 ;
@@ -109,6 +113,7 @@ This new BindPad will let you save your limited macro slots on the standard
 "Create Macro" panel.
 
 Usage:
+
 - Click the small red "+" icon to create an empty BindPad Macro.
 - Right-click an existing spell/item/macro icon on BindPad to convert it into a BindPad Macro.
 - Right-click the "BindPad Macro" to edit macro-text.
@@ -117,9 +122,10 @@ Usage:
 Note that BindPad Macro will only exist within the BindPad frame;
 You can drag-and-drop them within BindPad, but you cannot drop them outside.
 
-
 ----
+
 ### DETAILS AND MORE INFORMATION
+
 ----
 
 BindPad addon utilizes basic functions from the WoW API.
@@ -137,7 +143,6 @@ SetBindingMacro("KEY", "macroname"|macroid)
 Just don't forget to save changes by calling
 `SaveBindings(GetCurrentBindingSet())`.
 
-
 There are some other similar addons by other authors.
 Try them and choose what you like.
 
@@ -148,6 +153,5 @@ Try them and choose what you like.
 * [ncBindings](https://www.wowinterface.com/downloads/fileinfo.php?id=15270)
 
 * [ProKeybinds](https://www.wowinterface.com/downloads/fileinfo.php?id=18841)
-
 
 Also you can visit [Wowpedia](https://wow.gamepedia.com/Making_a_macro) for more information about keybindings and macros.
