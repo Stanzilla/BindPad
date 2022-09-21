@@ -1262,7 +1262,9 @@ function BindPadCore.CarryOverKeybinding(key, action)
         local profile = BindPadVars[character][profileNum];
         if profile ~= nil then
             if (profile.version or 0) >= BINDPAD_PROFILE_VERSION252 then
-                profile.AllKeyBindings[key] = action;
+                if profile.AllKeyBindings then
+                    profile.AllKeyBindings[key] = action;
+                end
             end
         end
     end
