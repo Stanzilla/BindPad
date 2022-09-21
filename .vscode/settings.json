@@ -1,0 +1,33 @@
+{
+    "cSpell.words": [
+        "BPMACRO",
+        "CVAR",
+        "INCOMBAT",
+        "LALT",
+        "LCTRL",
+        "Lerp",
+        "LSHIFT",
+        "luacheck",
+        "Mlists",
+        "nostance",
+        "NUMDIALOGS",
+        "RALT",
+        "RCTRL",
+        "RSHIFT",
+        "spellid",
+        "Tageshi",
+        "upvalue",
+        "Wowpedia",
+        "xinsonic"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+        "undefined-field",
+        "undefined-global",
+        "deprecated",
+        "need-check-nil",
+        "param-type-mismatch",
+        "redundant-parameter",
+        "missing-parameter"
+    ],
+}

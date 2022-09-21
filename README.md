@@ -26,7 +26,7 @@ and a dialog window that asks you to `Press a key to bind` will appear.
 6. When you want to remove icons from BindPad frame, simply drag away the icon
 and press right click to delete it.
 
-Note that key bindings itself will not be unbinded when you delete the icon.
+Note that key bindings itself will not be unbound when you delete the icon.
 To unbind it, click the icon and click the `Unbind` button on the dialog window.
 Also you can simply override key bindings with different ones.
 
@@ -38,8 +38,7 @@ There are four tabs called slot tabs at the top of the BindPad frame:
 
 * `General` slots are common icons used for every character and every spec.
 * `Character Specific` slots are for icons specific to the current characterand current spec.
-* [2] and [3] (aka. 2nd and 3rd character specific slots) will act
-in the same way as `Character Specific` slots.
+* The "2" and "3" tabs will act in the same way as `Character Specific` slots.
 
 Note that you can only use the `Character Specific` tab after clicking
 the `Character Specific Key Bindings` checkbox.
@@ -76,9 +75,9 @@ and `Shadow Dance` (`[stance:2]`) or none of the previous `[stance:0]`).
 
 Druid example: `/cast [stance:1] Bash; [nostance:1] Healing Touch`
 
-[nostance] = Caster, [stance:1] = Bear, [stance:2] = Aquatic, [stance:3] = Cat,
-[stance:4] = Travel, [stance:5] = Tree/Moonkin if available else Flight,
-[stance:6] = Flight if Tree/Moonkin is not available.
+`[nostance]` = Caster, `[stance:1]` = Bear, `[stance:2]` = Aquatic, `[stance:3]` = Cat,
+`[stance:4]` = Travel, `[stance:5]` = Tree/Moonkin if available else Flight,
+`[stance:6]` = Flight if Tree/Moonkin is not available.
 
 ### What does "You want to convert this icon into a BINDPAD MACRO?" mean?
 
