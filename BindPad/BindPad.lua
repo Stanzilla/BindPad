@@ -102,9 +102,7 @@ function BindPadFrame_OnLoad(self)
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 	self:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
 	self:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-
 	self:RegisterEvent("CVAR_UPDATE")
-
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 	GetMacroIcons(MACRO_ICON_FILENAMES)
@@ -890,7 +888,7 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
 			-- This fails if Blizzard_PetBattleUI is not loaded in memory;
 			--  padSlot.macrotext = SLASH_CLICK1.." MountJournalSummonRandomFavoriteButton";
 
-			-- This will accidently cancel Priest's Shadowform.
+			-- This will accidentally cancel Priest's Shadowform.
 			-- padSlot.macrotext = "/cancelform\n"..SLASH_SCRIPT1.." C_MountJournal.Summon(0)";
 
 			-- A very hacky workaround to all of the above.
@@ -1169,10 +1167,10 @@ function BindPadCore.GetSpellNum(bookType)
 	return spellNum
 end
 
-function BindPadCore.FindSpellBookIdByName(srchName, srchRank, bookType)
+function BindPadCore.FindSpellBookIdByName(searchName, searchRank, bookType)
 	for i = 1, BindPadCore.GetSpellNum(bookType), 1 do
 		local spellName, spellRank = GetSpellBookItemName(i, bookType)
-		if spellName == srchName then
+		if spellName == searchName then
 			return i
 		end
 	end
@@ -1239,12 +1237,12 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
 	end
 
 	if BindPadMacroFrameText and BindPadMacroFrameText:IsVisible() then
-		local _, _, kind, spellid = string.find(text, "^|c%x+|H(%a+):(%d+)[|:]")
+		local _, _, kind, spellId = string.find(text, "^|c%x+|H(%a+):(%d+)[|:]")
 
 		if kind == "item" then
 			text = GetItemInfo(text)
-		elseif kind == "spell" and spellid then
-			local name, rank = GetSpellInfo(spellid)
+		elseif kind == "spell" and spellId then
+			local name, rank = GetSpellInfo(spellId)
 			text = name
 		end
 		if BindPadMacroFrameText:GetText() == "" then
@@ -1264,12 +1262,14 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
 		end
 	end
 end
+
 hooksecurefunc("ChatEdit_InsertLink", BindPadCore.ChatEdit_InsertLinkHook)
 
 function BindPadCore.PickupSpellBookItemHook(slot, bookType)
 	BindPadCore.PickupSpellBookItem_slot = slot
 	BindPadCore.PickupSpellBookItem_bookType = bookType
 end
+
 hooksecurefunc("PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
 
 function BindPadCore.InitBindPadOnce(event)
@@ -1655,31 +1655,20 @@ function BindPadCore.DoRestoreAllKeys()
 	if BindPadVars.saveAllKeysFlag then
 		for i = 1, GetNumBindings() do
 			local command, category, key1, key2 = GetBinding(i)
-			-- Ensure to be unbinded if not binded.
+			-- Ensure to be unbound if not bound.
 			if key1 and profile.AllKeyBindings[key1] == nil then
 				BindPadCore.InnerSetBinding(key1, nil)
 			end
-			-- Ensure to be unbinded if not binded.
+			-- Ensure to be unbound if not bound.
 			if key2 and profile.AllKeyBindings[key2] == nil then
 				BindPadCore.InnerSetBinding(key2, nil)
 			end
 		end
 	end
 
-	--   for padSlot in BindPadCore.AllSlotInfoIter() do
-	--      if padSlot.action then
-	--         -- Ensure to be unbinded if not binded.
-	--         local key = GetBindingKey(padSlot.action);
-	--         if key then
-	--	    if profile.AllKeyBindings[key] == nil then
-	--	       BindPadCore.InnerSetBinding(key, nil);
-	--	    end
-	--         end
-	--      end
-	--   end
 	local to_be_removed = {}
 	for k, v in pairs(BindPadCore.currentkeybindings) do
-		-- Ensure to be unbinded if not binded.
+		-- Ensure to be unbound if not bound.
 		if profile.AllKeyBindings[k] == nil then
 			if strfind(v, "^CLICK BindPad") then
 				table.insert(to_be_removed, k)
@@ -1773,15 +1762,19 @@ end
 hooksecurefunc(GameTooltip, "SetItemByID", function(...)
 	return BindPadCore.GameTooltipSetItemByID(...)
 end)
+
 hooksecurefunc(GameTooltip, "SetBagItem", function(...)
 	return BindPadCore.GameTooltipSetBagItem(...)
 end)
+
 hooksecurefunc(GameTooltip, "SetSpellByID", function(...)
 	return BindPadCore.GameTooltipSetSpellByID(...)
 end)
+
 hooksecurefunc(GameTooltip, "SetSpellBookItem", function(...)
 	return BindPadCore.GameTooltipSetSpellBookItem(...)
 end)
+
 hooksecurefunc(GameTooltip, "SetAction", function(...)
 	return BindPadCore.GameTooltipSetAction(...)
 end)
@@ -1845,15 +1838,15 @@ function BindPadCore.AddHotKey(name, GetAction)
 	info.button = button
 	info.hotkey = hotkey
 
-	info.bphotkey = button:CreateFontString(name .. "BPHotKey", "ARTWORK", "NumberFontNormalSmallGray")
-	info.bphotkey:SetJustifyH("RIGHT")
-	info.bphotkey:SetSize(button:GetWidth(), 10)
-	info.bphotkey:SetPoint("TOPRIGHT", button, "TOPRIGHT", 0, -3)
-	info.bphotkey:Show()
+	info.bpHotkey = button:CreateFontString(name .. "bpHotkey", "ARTWORK", "NumberFontNormalSmallGray")
+	info.bpHotkey:SetJustifyH("RIGHT")
+	info.bpHotkey:SetSize(button:GetWidth(), 10)
+	info.bpHotkey:SetPoint("TOPRIGHT", button, "TOPRIGHT", 0, -3)
+	info.bpHotkey:Show()
 
 	-- Copying the range indicator color change.
 	hooksecurefunc(info.hotkey, "SetVertexColor", function(self, red, green, blue)
-		return info.bphotkey:SetVertexColor(red, green, blue)
+		return info.bpHotkey:SetVertexColor(red, green, blue)
 	end)
 
 	BindPadCore.HotKeyList[name] = info
@@ -1912,8 +1905,8 @@ function BindPadCore.OverwriteHotKey(info)
 			end
 			if key then
 				-- BindPad's ShowHotKey
-				info.bphotkey:SetText(BindPadCore.GetBindingText(key, "KEY_", 1))
-				info.bphotkey:SetAlpha(1)
+				info.bpHotkey:SetText(BindPadCore.GetBindingText(key, "KEY_", 1))
+				info.bpHotkey:SetAlpha(1)
 
 				-- Making original hotkey transparent.
 				info.hotkey:SetAlpha(0)
@@ -1923,7 +1916,7 @@ function BindPadCore.OverwriteHotKey(info)
 	end
 
 	-- Restoring original hotkey
-	info.bphotkey:SetAlpha(0)
+	info.bpHotkey:SetAlpha(0)
 	info.hotkey:SetAlpha(1)
 end
 
@@ -1961,19 +1954,19 @@ function BindPadCore.CreateFrameHook(frameType, frameName, parentFrame, inherits
 		end
 	end
 end
+
 hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook)
 
 BindPadCore.useBindPadSlot = 0
-function BindPadCore.CreateBindPadSlot(usenum)
+function BindPadCore.CreateBindPadSlot(usedNumber)
 	local NUM_SLOTS_PER_ROW = 6
-
-	for i = min(usenum + 1, BindPadCore.useBindPadSlot + 1), max(usenum, BindPadCore.useBindPadSlot) do
+	for i = min(usedNumber + 1, BindPadCore.useBindPadSlot + 1), max(usedNumber, BindPadCore.useBindPadSlot) do
 		local button = _G["BindPadSlot" .. i]
 		if button == nil then
 			button =
 				CreateFrame("CheckButton", "BindPadSlot" .. i, BindPadSlotButtonContainer, "BindPadSlotTemplate", i)
 		end
-		if i <= usenum then
+		if i <= usedNumber then
 			if i == 1 then
 				button:SetPoint("TOPLEFT", BindPadSlotButtonContainer, "TOPLEFT", 6, -6)
 			elseif mod(i, NUM_SLOTS_PER_ROW) == 1 then
@@ -1992,15 +1985,15 @@ function BindPadCore.CreateBindPadSlot(usenum)
 
 	BindPadScrollFrameFooter:SetPoint(
 		"TOPLEFT",
-		"BindPadSlot" .. (floor((usenum - 1) / NUM_SLOTS_PER_ROW) * NUM_SLOTS_PER_ROW + 1),
+		"BindPadSlot" .. (floor((usedNumber - 1) / NUM_SLOTS_PER_ROW) * NUM_SLOTS_PER_ROW + 1),
 		"BOTTOMLEFT",
 		0,
 		0
 	)
 
-	BindPadCore.useBindPadSlot = usenum
-	BindPadScrollFrameNumber:SetFormattedText(BINDPAD_TEXT_SLOTS_SHOWN, usenum)
-	if usenum > BINDPAD_MAXSLOTS_DEFAULT then
+	BindPadCore.useBindPadSlot = usedNumber
+	BindPadScrollFrameNumber:SetFormattedText(BINDPAD_TEXT_SLOTS_SHOWN, usedNumber)
+	if usedNumber > BINDPAD_MAXSLOTS_DEFAULT then
 		BindPadShowLessSlotButton:Enable()
 	else
 		BindPadShowLessSlotButton:Disable()
@@ -2041,11 +2034,11 @@ function BindPadCore.GetTabInfo(tab)
 		local tabname = "CharacterSpecificTab" .. (tab - BINDPAD_GENERAL_TAB)
 		if not profile[tabname] then
 			profile[tabname] = {}
-			for newid = 1, BINDPAD_MAXSLOTS_DEFAULT do
-				local oldid = newid + (tab - 2) * BINDPAD_MAXSLOTS_DEFAULT
+			for newId = 1, BINDPAD_MAXSLOTS_DEFAULT do
+				local oldId = newId + (tab - 2) * BINDPAD_MAXSLOTS_DEFAULT
 				-- Relocating old SlotInfo into the new table.
-				profile[tabname][newid] = profile[oldid]
-				profile[oldid] = nil
+				profile[tabname][newId] = profile[oldId]
+				profile[oldId] = nil
 			end
 			if profile[tabname].numSlot == nil then
 				profile[tabname].numSlot = BINDPAD_MAXSLOTS_DEFAULT
@@ -2071,6 +2064,7 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
 	end
 
 	local tabInfo = BindPadCore.GetTabInfo(tab)
+
 	if not tabInfo[id] then
 		if newFlag then
 			tabInfo[id] = {}
@@ -2123,7 +2117,6 @@ end
 function BindPadCore.GetBaseForMorphingSpell(spellAction)
 	if not BindPadCore.morphingSpellCache then
 		BindPadCore.morphingSpellCache = {}
-		local i
 		local bookType = BOOKTYPE_SPELL
 		for i = 1, BindPadCore.GetSpellNum(bookType), 1 do
 			local skillType, spellId = GetSpellBookItemInfo(i, bookType)
@@ -2163,6 +2156,7 @@ function BindPadCore.GetBindingKeyFromAction(action)
 			return key
 		end
 	end
+
 	return nil
 end
 
@@ -2170,6 +2164,7 @@ function BindPadCore.WaitForEvent(event, func)
 	if BindPadCore.JobFrame == nil then
 		BindPadCore.JobFrame = CreateFrame("FRAME", "BindPadCoreJobFrame")
 	end
+
 	local stack = nil
 	if BindPadCore.eventProc[event] ~= nil then
 		stack = BindPadCore.eventProc[event]
@@ -2184,6 +2179,7 @@ function BindPadCore.WaitForEvent(event, func)
 		end
 		BindPadCore.JobFrame:SetScript("OnEvent", OnEvent)
 	end
+
 	local function f(...)
 		BindPadCore.JobFrame:UnregisterEvent(event)
 		func(...)
@@ -2191,5 +2187,6 @@ function BindPadCore.WaitForEvent(event, func)
 			stack(...)
 		end
 	end
+
 	BindPadCore.eventProc[event] = f
 end
