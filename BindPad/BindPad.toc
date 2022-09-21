@@ -1,4 +1,4 @@
-## Interface: 90001
+## Interface: 90207
 ## Title: BindPad
 ## Version: @project-version@
 ## Author: Tageshi
