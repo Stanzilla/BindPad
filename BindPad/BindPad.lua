@@ -16,6 +16,8 @@ local function concat(arg1, arg2)
     end
 end
 
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
 local NUM_MACRO_ICONS_SHOWN = 20;
 local NUM_ICONS_PER_ROW = 5;
 local NUM_ICON_ROWS = 4;
@@ -67,6 +69,31 @@ BindPadCore = {
 };
 
 local BindPadCore = BindPadCore;
+
+local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup;
+
+function BindPadCore.GetSpecializationInfo(specIndex)
+    if isRetail then
+        local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex);
+        return name, icon;
+    else
+        local activeName;
+        local activeIcon;
+        local activeSpent = 0;
+        for i = 1, GetNumTalentTabs() do
+            local name, icon, spent = GetTalentTabInfo(i, false, false, specIndex);
+            if spent > activeSpent then
+                activeName = name;
+                activeIcon = icon;
+                activeSpent = spent;
+            end
+        end
+        if activeName == nil then
+            return "No active spec";
+        end
+        return activeName, activeIcon;
+    end
+end
 
 function BindPadFrame_Toggle()
     if BindPadFrame:IsVisible() then
@@ -1642,7 +1669,7 @@ function BindPadCore.GetSpecTexture(specIndex)
     if specIndex == nil then
         return nil;
     end
-    local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex)
+    local name, icon = BindPadCore.GetSpecializationInfo(specIndex)
     if icon ~= nil then
         return icon;
     end
@@ -1665,7 +1692,7 @@ function BindPadCore.GetTalentSpec(specIndex)
     if specIndex == nil then
         return "";
     end
-    local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex);
+    local name, icon = BindPadCore.GetSpecializationInfo(specIndex);
 
     return name;
 end
