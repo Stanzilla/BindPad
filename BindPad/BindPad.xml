@@ -367,7 +367,7 @@
                     </Frame>
                 </ScrollChild>
             </ScrollFrame>
-            <Button name="$parentTab1" inherits="TabButtonTemplate" text="BINDPAD_TEXT_GENERAL_TAB" id="1">
+            <Button name="$parentTab1" inherits="PanelTabButtonTemplate" text="BINDPAD_TEXT_GENERAL_TAB" id="1">
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
@@ -378,7 +378,7 @@
                 <Scripts>
                     <OnLoad>
                         PanelTemplates_TabResize(self, -15)
-                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31)
+                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 8)
                     </OnLoad>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
@@ -391,7 +391,7 @@
                     </OnLeave>
                 </Scripts>
             </Button>
-            <Button name="$parentTab2" inherits="TabButtonTemplate" id="2">
+            <Button name="$parentTab2" inherits="PanelTabButtonTemplate" id="2">
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
                         <Offset>
@@ -402,7 +402,7 @@
                 <Scripts>
                     <OnLoad>
                         self:SetFormattedText(BINDPAD_TEXT_SPECIFIC_TAB, UnitName("player"))
-                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31)
+                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 8)
                         PanelTemplates_TabResize(self, -15, nil, nil, 150)
                     </OnLoad>
                     <OnClick>
@@ -416,7 +416,7 @@
                     </OnLeave>
                 </Scripts>
             </Button>
-            <Button name="$parentTab3" inherits="TabButtonTemplate" id="3">
+            <Button name="$parentTab3" inherits="PanelTabButtonTemplate" id="3">
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
                         <Offset>
@@ -427,7 +427,7 @@
                 <Scripts>
                     <OnLoad>
                         self:SetText(BINDPAD_TEXT_SPECIFIC_EXTRA_TAB2)
-                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31)
+                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 8)
                         PanelTemplates_TabResize(self, -15, nil, nil, 150)
                     </OnLoad>
                     <OnClick>
@@ -441,7 +441,7 @@
                     </OnLeave>
                 </Scripts>
             </Button>
-            <Button name="$parentTab4" inherits="TabButtonTemplate" id="4">
+            <Button name="$parentTab4" inherits="PanelTabButtonTemplate" id="4">
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentTab3" relativePoint="RIGHT">
                         <Offset>
@@ -452,7 +452,7 @@
                 <Scripts>
                     <OnLoad>
                         self:SetText(BINDPAD_TEXT_SPECIFIC_EXTRA_TAB3)
-                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 31)
+                        _G[self:GetName().."HighlightTexture"]:SetWidth(self:GetTextWidth() + 8)
                         PanelTemplates_TabResize(self, -15, nil, nil, 150)
                     </OnLoad>
                     <OnClick>
@@ -914,7 +914,7 @@
             </OnMouseWheel>
         </Scripts>
     </Button>
-    <CheckButton name="BindPadMacroPopupButtonTemplate" inherits="PopupButtonTemplate" virtual="true">
+    <CheckButton name="BindPadMacroPopupButtonTemplate" inherits="SimplePopupButtonTemplate" virtual="true">
         <Scripts>
             <OnClick>
                 BindPadMacroPopupButton_OnClick(self)
@@ -1414,7 +1414,7 @@
             </Layer>
         </Layers>
         <Frames>
-            <CheckButton name="BindPadMacroFrameSlotButton" inherits="PopupButtonTemplate" id="0">
+            <CheckButton name="BindPadMacroFrameSlotButton" inherits="SimplePopupButtonTemplate" id="0">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="BindPadMacroFrameSlotBackground">
                         <Offset>
