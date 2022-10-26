@@ -203,7 +203,7 @@
     </Button>
     <Frame name="BindPadFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
         <Size>
-            <AbsDimension x="384" y="512" />
+            <AbsDimension x="384" y="518" />
         </Size>
         <Layers>
             <Layer level="BACKGROUND">
@@ -223,7 +223,7 @@
             <Layer level="BORDER">
                 <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-TopLeft">
                     <Size>
-                        <AbsDimension x="256" y="256" />
+                        <AbsDimension x="256" y="260" />
                     </Size>
                     <Anchors>
                         <Anchor point="TOPLEFT" />
@@ -231,7 +231,7 @@
                 </Texture>
                 <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-TopRight">
                     <Size>
-                        <AbsDimension x="128" y="256" />
+                        <AbsDimension x="128" y="260" />
                     </Size>
                     <Anchors>
                         <Anchor point="TOPRIGHT" />
@@ -239,7 +239,7 @@
                 </Texture>
                 <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft">
                     <Size>
-                        <AbsDimension x="256" y="256" />
+                        <AbsDimension x="256" y="260" />
                     </Size>
                     <Anchors>
                         <Anchor point="BOTTOMLEFT" />
@@ -247,7 +247,7 @@
                 </Texture>
                 <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-BottomRight">
                     <Size>
-                        <AbsDimension x="128" y="256" />
+                        <AbsDimension x="128" y="260" />
                     </Size>
                     <Anchors>
                         <Anchor point="BOTTOMRIGHT" />
@@ -542,7 +542,7 @@
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="$parent" relativePoint="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="303" y="-422" />
+                            <AbsDimension x="298" y="-422" />
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -562,7 +562,7 @@
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="19" y="-433" />
+                            <AbsDimension x="26" y="-433" />
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -1307,7 +1307,7 @@
     </Frame>
     <Frame name="BindPadMacroFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
         <Size>
-            <AbsDimension x="384" y="512" />
+            <AbsDimension x="384" y="518" />
         </Size>
         <Anchors>
             <Anchor point="TOPLEFT">
