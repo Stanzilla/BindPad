@@ -16,6 +16,8 @@ local function concat(arg1, arg2)
     end
 end
 
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
 local NUM_MACRO_ICONS_SHOWN = 20
 local NUM_ICONS_PER_ROW = 5
 local NUM_ICON_ROWS = 4
@@ -28,7 +30,9 @@ UIPanelWindows["BindPadFrame"] = { area = "left", pushable = 8, whileDead = 1 }
 UIPanelWindows["BindPadMacroFrame"] = { area = "left", pushable = 9, whileDead = 1 }
 
 local BINDPAD_MAXSLOTS_DEFAULT = 42
+local BINDPAD_MAXPROFILETAB = 5
 local BINDPAD_GENERAL_TAB = 1
+local BINDPAD_SPECIFIC_1ST_TAB = 2
 local BINDPAD_SAVEFILE_VERSION = 1.3
 local BINDPAD_PROFILE_VERSION252 = 252
 
@@ -66,6 +70,31 @@ BindPadCore = {
 
 local BindPadCore = BindPadCore
 
+local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup
+
+function BindPadCore.GetSpecializationInfo(specIndex)
+    if isRetail then
+        local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex)
+        return name, icon
+    else
+        local activeName
+        local activeIcon
+        local activeSpent = 0
+        for i = 1, GetNumTalentTabs() do
+            local name, icon, spent = GetTalentTabInfo(i, false, false, specIndex)
+            if spent > activeSpent then
+                activeName = name
+                activeIcon = icon
+                activeSpent = spent
+            end
+        end
+        if activeName == nil then
+            return "No active spec"
+        end
+        return activeName, activeIcon
+    end
+end
+
 function BindPadFrame_Toggle()
     if BindPadFrame:IsVisible() then
         HideUIPanel(BindPadFrame)
@@ -100,9 +129,15 @@ function BindPadFrame_OnLoad(self)
     self:RegisterEvent("UPDATE_BINDINGS")
     self:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
     self:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
+    self:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
+    self:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR")
     self:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
     self:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+    self:RegisterEvent("UPDATE_POSSESS_BAR")
+
+    self:RegisterEvent("PLAYER_TALENT_UPDATE")
     self:RegisterEvent("CVAR_UPDATE")
+
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
     GetMacroIcons(MACRO_ICON_FILENAMES)
@@ -162,7 +197,11 @@ function BindPadFrame_OnShow()
         BindPadVars.tab = 1
     end
 
-    BindPadFrameTitleText:SetText(BINDPAD_TITLE)
+    if BindPadVars.tab == 1 then
+        BindPadFrameTitleText:SetText(BINDPAD_TITLE)
+    else
+        BindPadFrameTitleText:SetText(_G["BINDPAD_TITLE_" .. BindPadCore.GetCurrentProfileNum()])
+    end
     PanelTemplates_SetTab(BindPadFrame, BindPadVars.tab)
 
     -- Update character button
@@ -174,6 +213,13 @@ function BindPadFrame_OnShow()
     BindPadVars.showHotkey = (BindPadVars.showHotkey or BindPadVars.showKeyInTooltipFlag)
     BindPadVars.showKeyInTooltipFlag = nil
     BindPadFrameShowHotkeyButton:SetChecked(BindPadVars.showHotkey)
+
+    -- Update profile tab
+    for i = 1, BINDPAD_MAXPROFILETAB, 1 do
+        local profiletab = _G["BindPadProfileTab" .. i]
+        profiletab:SetChecked((BindPadCore.GetCurrentProfileNum() == i))
+        BindPadProfileTab_OnShow(profiletab)
+    end
 
     local tabInfo = BindPadCore.GetTabInfo(BindPadVars.tab)
     BindPadCore.CreateBindPadSlot(tabInfo.numSlot)
@@ -792,6 +838,79 @@ function BindPadMacroFrame_OnHide(self)
     end
 end
 
+function BindPadProfileTab_OnShow(self)
+    local normalTexture = self:GetNormalTexture()
+    local spec1, spec2, spec3, spec4 = BindPadCore.GetSpecsForProfile(self:GetID())
+    local texture = BindPadCore.GetSpecTexture(spec1)
+    normalTexture:SetTexture(texture)
+
+    if spec2 then
+        texture = BindPadCore.GetSpecTexture(spec2)
+        self.subIcon:SetTexture(texture)
+        self.subIcon:Show()
+    else
+        self.subIcon:Hide()
+    end
+
+    if spec3 then
+        texture = BindPadCore.GetSpecTexture(spec3)
+        self.subIcon2:SetTexture(texture)
+        self.subIcon2:Show()
+    else
+        self.subIcon2:Hide()
+    end
+
+    if spec4 then
+        texture = BindPadCore.GetSpecTexture(spec4)
+        self.subIcon3:SetTexture(texture)
+        self.subIcon3:Show()
+    else
+        self.subIcon3:Hide()
+    end
+
+    if BindPadCore.GetCurrentProfileNum() == self:GetID() then
+        self:SetChecked(1)
+    end
+end
+
+function BindPadProfileTab_OnClick(self, button, down)
+    if BindPadVars.tab == 1 and self:GetID() ~= BindPadCore.GetCurrentProfileNum() then
+        BindPadFrameTab_OnClick(BindPadFrameTab2)
+    end
+    BindPadCore.SwitchProfile(self:GetID())
+    BindPadFrame_OnShow()
+    BindPadProfileTab_OnEnter(self)
+end
+
+function BindPadProfileTab_OnEnter(self, motion)
+    local profileNum = self:GetID()
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(BINDPAD_TOOLTIP_EXTRA_PROFILE .. profileNum)
+
+    local spec1, spec2, spec3, spec4 = BindPadCore.GetSpecsForProfile(self:GetID())
+    if spec4 ~= nil then
+        GameTooltip:AddLine(BINDPAD_TOOLTIP_PROFILE_CURRENTLY4, 0.8, 0.8, 1.0)
+    elseif spec3 ~= nil then
+        GameTooltip:AddLine(
+            format(BINDPAD_TOOLTIP_PROFILE_CURRENTLY3, BindPadCore.GetTalentSpec(spec1), BindPadCore.GetTalentSpec(spec2), BindPadCore.GetTalentSpec(spec3)),
+            0.8,
+            0.8,
+            1.0
+        )
+    elseif spec2 ~= nil then
+        GameTooltip:AddLine(format(BINDPAD_TOOLTIP_PROFILE_CURRENTLY2, BindPadCore.GetTalentSpec(spec1), BindPadCore.GetTalentSpec(spec2)), 0.8, 0.8, 1.0)
+    elseif spec1 ~= nil then
+        GameTooltip:AddLine(format(BINDPAD_TOOLTIP_PROFILE_CURRENTLY1, BindPadCore.GetTalentSpec(spec1)), 0.8, 0.8, 1.0)
+    end
+
+    local specIndex = GetSpecialization()
+    if profileNum ~= BindPadCore.GetProfileForSpec(specIndex) then
+        GameTooltip:AddLine(format(BINDPAD_TOOLTIP_PROFILE_CLICK_FOR, profileNum, BindPadCore.GetTalentSpec(specIndex)), 0.8, 1.0, 0.8)
+    end
+
+    GameTooltip:Show()
+end
+
 --
 -- BindPadCore:  A set of core functions
 --
@@ -965,6 +1084,48 @@ function BindPadCore.GetCurrentProfileNum()
     return BindPadCore.profileNum
 end
 
+function BindPadCore.GetProfileForSpec(specIndex)
+    local character = BindPadCore.character
+    if not character then
+        return nil
+    end
+    if not BindPadVars[character].profileForTalentGroup[specIndex] then
+        BindPadVars[character].profileForTalentGroup[specIndex] = specIndex
+    end
+
+    return BindPadVars[character].profileForTalentGroup[specIndex]
+end
+
+function BindPadCore.GetSpecsForProfile(profileNum)
+    local spec1, spec2, spec3, spec4
+    local character = BindPadCore.character
+
+    if not character then
+        return nil
+    end
+
+    local specIndex = GetSpecialization()
+    if BindPadVars[character].profileForTalentGroup[specIndex] == profileNum then
+        spec1 = specIndex
+    end
+
+    for k, v in pairs(BindPadVars[character].profileForTalentGroup) do
+        if v == profileNum and k ~= specIndex then
+            if spec1 == nil then
+                spec1 = k
+            elseif spec2 == nil then
+                spec2 = k
+            elseif spec3 == nil then
+                spec3 = k
+            elseif spec4 == nil then
+                spec4 = k
+            end
+        end
+    end
+
+    return spec1, spec2, spec3, spec4
+end
+
 function BindPadCore.GetProfileData()
     local character = BindPadCore.character
     if not character then
@@ -996,7 +1157,8 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
 
     BindPadCore.profileNum = newProfileNum
 
-    BindPadVars[character].profileForTalentGroup[1] = newProfileNum
+    local specIndex = GetSpecialization()
+    BindPadVars[character].profileForTalentGroup[specIndex] = newProfileNum
 
     -- Create new profile if not available
     if not BindPadVars[character][newProfileNum] then
@@ -1248,14 +1410,12 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
         end
     end
 end
-
 hooksecurefunc("ChatEdit_InsertLink", BindPadCore.ChatEdit_InsertLinkHook)
 
 function BindPadCore.PickupSpellBookItemHook(slot, bookType)
     BindPadCore.PickupSpellBookItem_slot = slot
     BindPadCore.PickupSpellBookItem_bookType = bookType
 end
-
 hooksecurefunc("PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
 
 function BindPadCore.InitBindPadOnce(event)
@@ -1285,7 +1445,8 @@ function BindPadCore.InitProfile()
         BindPadVars[character].profileForTalentGroup = {}
     end
 
-    local profileNum = 1
+    local newActiveTalentGroup = GetSpecialization()
+    local profileNum = BindPadCore.GetProfileForSpec(newActiveTalentGroup)
 
     -- Make sure profileNum tab is set for current talent group.
     BindPadCore.SwitchProfile(profileNum, true)
@@ -1444,20 +1605,32 @@ function BindPadCore.PlayerTalentUpdate()
     -- Reset cache for morphing spells
     BindPadCore.morphingSpellCache = nil
 
-    local profileNum = 1
+    local newActiveSpec = GetSpecialization()
+    local profileNum = BindPadCore.GetProfileForSpec(newActiveSpec)
 
     BindPadCore.SwitchProfile(profileNum)
     if BindPadFrame:IsShown() then
         BindPadFrame_OnShow()
     end
 
-    BindPadCore.activeTalentGroup = 1
+    BindPadCore.activeTalentGroup = newActiveSpec
 end
 
 function BindPadCore.CVAR_UPDATE(arg1, arg2)
     if arg1 == "ACTION_BUTTON_USE_KEY_DOWN" then
         BindPadCore.SetTriggerOnKeydown()
     end
+end
+
+function BindPadCore.GetSpecTexture(specIndex)
+    if specIndex == nil then
+        return nil
+    end
+    local name, icon = BindPadCore.GetSpecializationInfo(specIndex)
+    if icon ~= nil then
+        return icon
+    end
+    return "Interface\\Icons\\Ability_Marksmanship"
 end
 
 function BindPadCore.SetTriggerOnKeydown()
@@ -1470,6 +1643,15 @@ function BindPadCore.SetTriggerOnKeydown()
         BindPadMacro:RegisterForClicks("AnyUp")
         BindPadKey:RegisterForClicks("AnyUp")
     end
+end
+
+function BindPadCore.GetTalentSpec(specIndex)
+    if specIndex == nil then
+        return ""
+    end
+    local name, icon = BindPadCore.GetSpecializationInfo(specIndex)
+
+    return name
 end
 
 function BindPadCore.DoList(arg)
@@ -1646,6 +1828,17 @@ function BindPadCore.DoRestoreAllKeys()
         end
     end
 
+    --   for padSlot in BindPadCore.AllSlotInfoIter() do
+    --      if padSlot.action then
+    --         -- Ensure to be unbound if not bound
+    --         local key = GetBindingKey(padSlot.action);
+    --         if key then
+    --	    if profile.AllKeyBindings[key] == nil then
+    --	       BindPadCore.InnerSetBinding(key, nil);
+    --	    end
+    --         end
+    --      end
+    --   end
     local to_be_removed = {}
     for k, v in pairs(BindPadCore.currentkeybindings) do
         -- Ensure to be unbound if not bound.
@@ -1851,6 +2044,7 @@ function BindPadCore.AddAllHotKeys()
             end
         end
     end
+
     table.wipe(BindPadCore.CreateFrameQueue)
 end
 
@@ -1940,6 +2134,7 @@ hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook)
 BindPadCore.useBindPadSlot = 0
 function BindPadCore.CreateBindPadSlot(usedNumber)
     local NUM_SLOTS_PER_ROW = 6
+
     for i = min(usedNumber + 1, BindPadCore.useBindPadSlot + 1), max(usedNumber, BindPadCore.useBindPadSlot) do
         local button = _G["BindPadSlot" .. i]
         if button == nil then
@@ -2037,7 +2232,6 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
     end
 
     local tabInfo = BindPadCore.GetTabInfo(tab)
-
     if not tabInfo[id] then
         if newFlag then
             tabInfo[id] = {}
@@ -2129,7 +2323,6 @@ function BindPadCore.GetBindingKeyFromAction(action)
             return key
         end
     end
-
     return nil
 end
 
@@ -2137,7 +2330,6 @@ function BindPadCore.WaitForEvent(event, func)
     if BindPadCore.JobFrame == nil then
         BindPadCore.JobFrame = CreateFrame("FRAME", "BindPadCoreJobFrame")
     end
-
     local stack = nil
     if BindPadCore.eventProc[event] ~= nil then
         stack = BindPadCore.eventProc[event]
@@ -2152,7 +2344,6 @@ function BindPadCore.WaitForEvent(event, func)
         end
         BindPadCore.JobFrame:SetScript("OnEvent", OnEvent)
     end
-
     local function f(...)
         BindPadCore.JobFrame:UnregisterEvent(event)
         func(...)
@@ -2160,6 +2351,5 @@ function BindPadCore.WaitForEvent(event, func)
             stack(...)
         end
     end
-
     BindPadCore.eventProc[event] = f
 end
