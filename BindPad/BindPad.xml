@@ -332,7 +332,6 @@
                 <Scripts>
                     <OnLoad method="OnLoad"/>
                     <OnShow method="OnShow"/>
-			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -355,7 +354,6 @@
                 <Scripts>
                     <OnLoad method="OnLoad"/>
                     <OnShow method="OnShow"/>
-			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -378,7 +376,6 @@
                 <Scripts>
                     <OnLoad method="OnLoad"/>
                     <OnShow method="OnShow"/>
-			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -401,7 +398,6 @@
                 <Scripts>
                     <OnLoad method="OnLoad"/>
                     <OnShow method="OnShow"/>
-			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
