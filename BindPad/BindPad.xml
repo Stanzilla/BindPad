@@ -328,7 +328,7 @@
                 </Anchors>
                 <Scripts>
                     <OnShow>
-                        PanelTemplates_TabResize(self, -10, nil, 36)
+                        PanelTemplates_TabResize(self, nil, nil, 36)
                     </OnShow>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
