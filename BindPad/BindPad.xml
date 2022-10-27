@@ -1522,7 +1522,7 @@
                 <Anchors>
                     <Anchor point="TOPRIGHT" relativeTo="BindPadMacroFrame" relativePoint="TOPRIGHT">
                         <Offset>
-                            <AbsDimension x="-29" y="-8" />
+                            <AbsDimension x="-34" y="-12" />
                         </Offset>
                     </Anchor>
                 </Anchors>
