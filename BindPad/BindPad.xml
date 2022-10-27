@@ -330,9 +330,9 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-                    <OnShow>
-                        PanelTemplates_TabResize(self, nil, nil, 36)
-                    </OnShow>
+                    <OnLoad method="OnLoad"/>
+                    <OnShow method="OnShow"/>
+			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -353,9 +353,9 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-                    <OnShow>
-                        PanelTemplates_TabResize(self, nil, nil, nil, 150)
-                    </OnShow>
+                    <OnLoad method="OnLoad"/>
+                    <OnShow method="OnShow"/>
+			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -376,9 +376,9 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-                    <OnShow>
-                        PanelTemplates_TabResize(self, nil, nil, 36)
-                    </OnShow>
+                    <OnLoad method="OnLoad"/>
+                    <OnShow method="OnShow"/>
+			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
@@ -399,9 +399,9 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
-                    <OnShow>
-                        PanelTemplates_TabResize(self, nil, nil, 36)
-                    </OnShow>
+                    <OnLoad method="OnLoad"/>
+                    <OnShow method="OnShow"/>
+			        <OnHide method="OnHide"/>
                     <OnClick>
                         BindPadFrameTab_OnClick(self)
                     </OnClick>
