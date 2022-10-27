@@ -851,7 +851,15 @@
             </OnMouseWheel>
         </Scripts>
     </Button>
-    <CheckButton name="BindPadMacroPopupButtonTemplate" inherits="SimplePopupButtonTemplate" virtual="true">
+    <CheckButton name="BindPadMacroPopupButtonTemplate" inherits="BindPadUIPanelButtonTemplate" virtual="true">
+        <Size>
+                <AbsDimension x="36" y="36"/>
+        </Size>
+        <NormalTexture name="$parentIcon" parentKey="Icon">
+            <Size>
+                <AbsDimension x="36" y="36"/>
+            </Size>
+        </NormalTexture>
         <Scripts>
             <OnClick>
                 BindPadMacroPopupButton_OnClick(self)
@@ -1244,7 +1252,7 @@
     </Frame>
     <Frame name="BindPadMacroFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
         <Size>
-            <AbsDimension x="384" y="518" />
+            <AbsDimension x="384" y="512" />
         </Size>
         <Anchors>
             <Anchor point="TOPLEFT">
@@ -1352,13 +1360,18 @@
         </Layers>
         <Frames>
             <CheckButton name="BindPadMacroFrameSlotButton" inherits="SimplePopupButtonTemplate" id="0">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="BindPadMacroFrameSlotBackground">
-                        <Offset>
-                            <AbsDimension x="14" y="-14" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
+                <NormalTexture name="$parentIcon" parentKey="Icon">
+                    <Size>
+				        <AbsDimension x="36" y="36"/>
+			        </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="BindPadMacroFrameSlotBackground">
+                            <Offset>
+                                <AbsDimension x="14" y="-14" />
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </NormalTexture>
             </CheckButton>
             <ScrollFrame name="BindPadMacroFrameScrollFrame" inherits="UIPanelScrollFrameTemplate">
                 <Size>
