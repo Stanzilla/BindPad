@@ -538,7 +538,6 @@ end
 
 function BindPadSlot_UpdateState(self)
     local padSlot = BindPadCore.GetSlotInfo(self:GetID());
-
     if padSlot and padSlot.type and padSlot.action then
         self.icon:SetTexture(padSlot.texture);
         self.icon:Show();
@@ -2237,7 +2236,6 @@ function BindPadCore.GetSlotInfoInTab(tab, id, newFlag)
             tabInfo[id] = nil;
         end
     end
-
     return tabInfo[id];
 end
 
