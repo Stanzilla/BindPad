@@ -856,7 +856,7 @@
     </Button>
     <CheckButton name="BindPadMacroPopupButtonTemplate" inherits="BindPadUIPanelButtonTemplate" virtual="true">
         <Size>
-                <AbsDimension x="36" y="36"/>
+            <AbsDimension x="36" y="36"/>
         </Size>
         <NormalTexture name="$parentIcon" parentKey="Icon">
             <Size>
@@ -869,85 +869,19 @@
             </OnClick>
         </Scripts>
     </CheckButton>
-    <Frame name="BindPadMacroPopupFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
+    <Frame name="BindPadMacroPopupFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true" inherits="ButtonFrameTemplate">
         <Size>
             <AbsDimension x="297" y="298" />
         </Size>
         <Anchors>
             <Anchor point="TOPLEFT" relativeTo="BindPadFrame" relativePoint="TOPRIGHT">
                 <Offset>
-                    <AbsDimension x="-40" y="-40" />
+                    <AbsDimension x="40" y="-40" />
                 </Offset>
             </Anchor>
         </Anchors>
-        <Layers>
-            <Layer level="BACKGROUND">
-                <Texture file="Interface\MacroFrame\MacroPopup-TopLeft">
-                    <Size>
-                        <AbsDimension x="256" y="256" />
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT" />
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\MacroFrame\MacroPopup-TopRight">
-                    <Size>
-                        <AbsDimension x="64" y="256" />
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="256" y="0" />
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\MacroFrame\MacroPopup-BotLeft">
-                    <Size>
-                        <AbsDimension x="256" y="64" />
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="0" y="-256" />
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <Texture file="Interface\MacroFrame\MacroPopup-BotRight">
-                    <Size>
-                        <AbsDimension x="64" y="64" />
-                    </Size>
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="256" y="-256" />
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <FontString inherits="GameFontHighlightSmall" text="MACRO_POPUP_TEXT">
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="24" y="-21" />
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-                <FontString inherits="GameFontHighlightSmall" text="MACRO_POPUP_CHOOSE_ICON">
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset>
-                                <AbsDimension x="24" y="-69" />
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
         <Frames>
-            <EditBox name="BindPadMacroPopupEditBox" letters="16" historyLines="0">
+            <EditBox name="BindPadMacroPopupEditBox" letters="16" historyLines="0" inherits="InputBoxInstructionsTemplate">
                 <Size>
                     <AbsDimension x="200" y="20" />
                 </Size>
@@ -958,43 +892,12 @@
                         </Offset>
                     </Anchor>
                 </Anchors>
-                <Layers>
-                    <Layer level="BACKGROUND">
-                        <Texture name="BindPadMacroPopupNameLeft" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
-                            <Size>
-                                <AbsDimension x="12" y="29" />
-                            </Size>
-                            <Anchors>
-                                <Anchor point="TOPLEFT">
-                                    <Offset>
-                                        <AbsDimension x="-11" y="0" />
-                                    </Offset>
-                                </Anchor>
-                            </Anchors>
-                            <TexCoords left="0" right="0.09375" top="0" bottom="1.0" />
-                        </Texture>
-                        <Texture name="BindPadMacroPopupNameMiddle" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
-                            <Size>
-                                <AbsDimension x="175" y="29" />
-                            </Size>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="BindPadMacroPopupNameLeft" relativePoint="RIGHT" />
-                            </Anchors>
-                            <TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0" />
-                        </Texture>
-                        <Texture name="BindPadMacroPopupNameRight" file="Interface\ClassTrainerFrame\UI-ClassTrainer-FilterBorder">
-                            <Size>
-                                <AbsDimension x="12" y="29" />
-                            </Size>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="BindPadMacroPopupNameMiddle" relativePoint="RIGHT" />
-                            </Anchors>
-                            <TexCoords left="0.90625" right="1.0" top="0" bottom="1.0" />
-                        </Texture>
-                    </Layer>
-                </Layers>
                 <Scripts>
+                    <OnLoad>
+                        self.Instructions:SetText("Macro Name")
+                    </OnLoad>
                     <OnTextChanged>
+                        InputBoxInstructions_OnTextChanged(self)
                         BindPadMacroPopupOkayButton_Update(self)
                         BindPadMacroPopupEditBox_OnTextChanged(self)
                     </OnTextChanged>
@@ -1006,6 +909,8 @@
                             BindPadMacroPopupOkayButton_OnClick(self)
                         end
                     </OnEnterPressed>
+                    <OnDisable function="InputBoxInstructions_OnDisable"/>
+			        <OnEnable function="InputBoxInstructions_OnEnable"/>
                 </Scripts>
                 <FontString inherits="ChatFontNormal" />
             </EditBox>
@@ -1243,6 +1148,8 @@
         </Frames>
         <Scripts>
             <OnShow>
+                ButtonFrameTemplate_HidePortrait(self)
+                self:SetTitle(CHANGE_MACRO_NAME_ICON)
                 PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN)
                 BindPadMacroPopupFrame_OnShow(self)
             </OnShow>
