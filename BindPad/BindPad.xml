@@ -210,7 +210,7 @@
 				<Texture name="MacroFramePortrait" file="Interface\MacroFrame\MacroFrame-Icon">
 					<Size x="60" y="60"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="-5" y="5"/>
+						<Anchor point="TOPLEFT" x="-5" y="7"/>
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -219,36 +219,39 @@
             <ScrollFrame name="BindPadScrollFrame" inherits="UIPanelScrollFrameTemplate">
                 <Size x="350" y="370" />
                 <Anchors>
-                    <Anchor point="TOPLEFT" x="16" y="-68" />
+			        <Anchor point="TOPLEFT" x="13" y="-68"/>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
                         <Texture name="$parentTop" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-                            <Size x="31" y="102" />
+                            <Size x="31" y="102"/>
                             <Anchors>
-                                <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-2" y="5" />
+                                <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-2" y="5"/>
                             </Anchors>
-                            <TexCoords left="0" right="0.484375" top="0" bottom="0.4" />
+                            <TexCoords left="0" right="0.484375" top="0" bottom="0.4"/>
                         </Texture>
                         <Texture name="$parentBottom" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-                            <Size x="31" y="106" />
+                            <Size x="31" y="106"/>
                             <Anchors>
-                                <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-2" y="-2" />
+                                <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-2" y="-2"/>
                             </Anchors>
-                            <TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625" />
+                            <TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
                         </Texture>
                         <Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
-                            <Size x="31" y="1" />
+                            <Size x="31" y="1"/>
                             <Anchors>
-                                <Anchor point="TOP" relativeTo="$parentTop" relativePoint="BOTTOM" />
-                                <Anchor point="BOTTOM" relativeTo="$parentBottom" relativePoint="TOP" />
+                                <Anchor point="TOP" relativeTo="$parentTop" relativePoint="BOTTOM"/>
+                                <Anchor point="BOTTOM" relativeTo="$parentBottom" relativePoint="TOP"/>
                             </Anchors>
-                            <TexCoords left="0" right="0.484375" top=".75" bottom="1.0" />
+                            <TexCoords left="0" right="0.484375" top=".75" bottom="1.0"/>
                         </Texture>
                     </Layer>
                 </Layers>
                 <Scripts>
-                    <OnLoad function="ScrollFrame_OnLoad" />
+                    <OnLoad>
+                        self.scrollBarHideable = true
+                        ScrollFrame_OnLoad(self)
+                    </OnLoad>
                 </Scripts>
                 <ScrollChild>
                     <Frame name="BindPadSlotButtonContainer">
