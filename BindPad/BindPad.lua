@@ -1932,7 +1932,12 @@ function BindPadCore.GameTooltipSetItemByID(self, itemID)
 end
 
 function BindPadCore.GameTooltipSetBagItem(self, bag, slot)
-    local itemID = GetContainerItemID(bag, slot);
+    local itemID
+    if C_Container.GetContainerItemID then
+        itemID = C_Container.GetContainerItemID(bag, slot)
+    else
+        itemID = GetContainerItemID(bag, slot)
+    end
     if itemID then
         BindPadCore.InsertBindingTooltip(concat("ITEM ", GetItemInfo(itemID)));
     end

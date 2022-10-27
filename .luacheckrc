@@ -374,6 +374,7 @@ globals = {
 	"C_Commentator.UpdatePlayerInfo",
 	"C_Commentator.ZoomIn",
 	"C_Commentator.ZoomOut",
+    "C_Container",
 	"C_Garrison",
 	"C_Garrison.AddFollowerToMission",
 	"C_Garrison.AllowMissionStartAboveSoftCap",
