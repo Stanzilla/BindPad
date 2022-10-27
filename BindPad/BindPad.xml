@@ -483,18 +483,15 @@
                 </Scripts>
             </CheckButton>
             <!-- Bottom Right "Exit" Button -->
-            <Button name="$parentExitButton" inherits="BindPadUIPanelButtonTemplate" text="BINDPAD_TEXT_EXIT">
+            <Button name="$parentExitButton" inherits="BindPadUIPanelButtonTemplate, MagicButtonTemplate" text="BINDPAD_TEXT_EXIT">
                 <Size>
                     <AbsDimension x="80" y="22" />
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
-                        <Offset>
-                            <AbsDimension x="-40" y="36" />
-                        </Offset>
-                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
                 <Scripts>
+                    <OnLoad function="MagicButton_OnLoad" />
                     <OnClick>
                         HideUIPanel(self:GetParent())
                     </OnClick>
@@ -1111,35 +1108,33 @@
                     </Anchor>
                 </Anchors>
             </CheckButton>
-            <Button name="BindPadMacroPopupCancelButton" inherits="BindPadUIPanelButtonTemplate" text="CANCEL">
+            <Button name="BindPadMacroPopupCancelButton" inherits="BindPadUIPanelButtonTemplate, MagicButtonTemplate" text="CANCEL">
                 <Size>
                     <AbsDimension x="78" y="22" />
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="BindPadMacroPopupFrame">
-                        <Offset>
-                            <AbsDimension x="-11" y="13" />
-                        </Offset>
-                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" />
                 </Anchors>
                 <Scripts>
+                    <OnLoad function="MagicButton_OnLoad" />
                     <OnClick>
                         BindPadMacroPopupFrame_CancelEdit(self)
                     </OnClick>
                 </Scripts>
             </Button>
-            <Button name="BindPadMacroPopupOkayButton" inherits="BindPadUIPanelButtonTemplate" text="OKAY">
+            <Button name="BindPadMacroPopupOkayButton" inherits="BindPadUIPanelButtonTemplate, MagicButtonTemplate" text="OKAY">
                 <Size>
                     <AbsDimension x="78" y="22" />
                 </Size>
                 <Anchors>
-                    <Anchor point="RIGHT" relativeTo="BindPadMacroPopupCancelButton" relativePoint="LEFT">
+                    <Anchor point="TOPRIGHT" relativeTo="BindPadMacroPopupCancelButton" relativePoint="TOPLEFT">
                         <Offset>
                             <AbsDimension x="-2" y="0" />
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Scripts>
+                    <OnLoad function="MagicButton_OnLoad" />
                     <OnClick>
                         BindPadMacroPopupOkayButton_OnClick(self)
                     </OnClick>
