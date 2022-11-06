@@ -1960,7 +1960,7 @@ end
 
 function BindPadCore.GameTooltipSetBagItem(self, bag, slot)
     local itemID
-    if C_Container.GetContainerItemID then
+    if C_Container and C_Container.GetContainerItemID then
         itemID = C_Container.GetContainerItemID(bag, slot)
     else
         itemID = GetContainerItemID(bag, slot)
