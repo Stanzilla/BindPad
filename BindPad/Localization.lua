@@ -26,7 +26,7 @@ BINDPAD_TEXT_CANNOT_PLACE = "ERROR: %s can not be placed in BindPad slot.";
 BINDPAD_TEXT_CANNOT_BIND = "Cannot change key bindings while in combat."
 BINDPAD_TEXT_OBSOLATED = "Older version's savefile for BindPad is now obsolated and deleted.  Sorry for inconvenience.";
 BINDPAD_TEXT_ARE_YOU_SURE = "REALLY? ARE YOU SURE?";
-BINDPAD_TEXT_CONFIRM_CHANGE_BINDING_PROFILE = "You need to activate Character Specific Key Bindings mode of Blizard-UI.  Click Okay if you want to change Key Bindings mode now.";
+BINDPAD_TEXT_CONFIRM_CHANGE_BINDING_PROFILE = "You need to activate Character Specific Key Bindings mode of Blizzard-UI.  Click Okay if you want to change Key Bindings mode now.";
 BINDPAD_TEXT_CONFIRM_CONVERT = "Are you sure you want to convert this %s \"%s\" into a BindPad Macro?";
 BINDPAD_TEXT_SHOW_HOTKEY = "Show Hotkeys";
 BINDPAD_TEXT_SAVE_ALL_KEYS = "Save All Keys";
@@ -54,10 +54,8 @@ BINDPAD_TOOLTIP_SPECIFIC_TAB_EXPLAIN = "For icons specific to current character 
 BINDPAD_TOOLTIP_TAB3 = "%s Specific Slots 2nd Tab";
 BINDPAD_TOOLTIP_TAB4 = "%s Specific Slots 3rd Tab";
 BINDPAD_TOOLTIP_SAVE_ALL_KEYS = "Automatically save&restore all keys of Blizzard's Key Bindings Interface for each profile.";
-BINDPAD_TOOLTIP_SHOW_HOTKEY =
-   "Automatically shows hotkey text when you place 'BindPad'ed icons on ActionBars. Also shows keybindings in tooltips.";
-BINDPAD_TOOLTIP_FOR_ALL_CHARACTERS = 
-   "Keybind for this icon will be carried over to all other characters.";
+BINDPAD_TOOLTIP_SHOW_HOTKEY = "Automatically shows hotkey text when you place 'BindPad'ed icons on ActionBars. Also shows keybindings in tooltips.";
+BINDPAD_TOOLTIP_FOR_ALL_CHARACTERS = "Keybind for this icon will be carried over to all other characters.";
 BINDPAD_TOOLTIP_CREATE_MACRO = "Create BindPad Macro";
 BINDPAD_TOOLTIP_CLICK_USAGE1 = "Right click to edit macro\nLeft click to bind";
 BINDPAD_TOOLTIP_CLICK_USAGE2 = "Right click to convert\nLeft click to bind";

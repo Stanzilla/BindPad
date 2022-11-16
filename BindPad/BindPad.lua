@@ -1016,7 +1016,7 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
             -- This fails if Blizzard_PetBattleUI is not loaded in memory;
             --  padSlot.macrotext = SLASH_CLICK1.." MountJournalSummonRandomFavoriteButton";
 
-            -- This will accidently cancel Priest's Shadowform.
+            -- This will accidentally cancel Priest's Shadowform.
             -- padSlot.macrotext = "/cancelform\n"..SLASH_SCRIPT1.." C_MountJournal.Summon(0)";
 
             -- A very hacky workaround to all of the above.
@@ -1205,7 +1205,7 @@ function BindPadCore.SwitchProfile(newProfileNum, force)
     if not BindPadVars[character][newProfileNum] then
         BindPadVars[character][newProfileNum] = {};
 
-        -- This call to DoSaveAllKeys is nesessary
+        -- This call to DoSaveAllKeys is necessary
         -- Putting current keybindings data into a new profile tab table.
         BindPadCore.DoSaveAllKeys();
         BindPadFrame_OutputText(BINDPAD_TEXT_CREATE_PROFILETAB);
@@ -1860,11 +1860,11 @@ function BindPadCore.DoRestoreAllKeys()
     if BindPadVars.saveAllKeysFlag then
         for i=1,GetNumBindings() do
             local command, category, key1, key2 = GetBinding(i);
-            -- Ensure to be unbinded if not binded.
+            -- Ensure to be unbound if not bound.
             if key1 and profile.AllKeyBindings[key1] == nil then
                 BindPadCore.InnerSetBinding(key1, nil);
             end
-            -- Ensure to be unbinded if not binded.
+            -- Ensure to be unbound if not bound.
             if key2 and profile.AllKeyBindings[key2] == nil then
                 BindPadCore.InnerSetBinding(key2, nil);
             end
@@ -1873,7 +1873,7 @@ function BindPadCore.DoRestoreAllKeys()
 
     --   for padSlot in BindPadCore.AllSlotInfoIter() do
     --      if padSlot.action then
-    --         -- Ensure to be unbinded if not binded.
+    --         -- Ensure to be unbound if not bound.
     --         local key = GetBindingKey(padSlot.action);
     --         if key then
     --	    if profile.AllKeyBindings[key] == nil then
@@ -1884,7 +1884,7 @@ function BindPadCore.DoRestoreAllKeys()
     --   end
     local to_be_removed = {};
     for k,v in pairs(BindPadCore.currentkeybindings) do
-        -- Ensure to be unbinded if not binded.
+        -- Ensure to be unbound if not bound.
         if profile.AllKeyBindings[k] == nil then
             if strfind(v, "^CLICK BindPad") then
                 table.insert(to_be_removed, k);

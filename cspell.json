@@ -1,0 +1,28 @@
+{
+  "version": "0.2",
+  "language": "en-US",
+  "ignoreRegExpList": [
+    "\\((.+?)\\)"
+  ],
+  "words": [
+    "bphotkey",
+    "BPMACRO",
+    "CVAR",
+    "INCOMBAT",
+    "LALT",
+    "LCTRL",
+    "LSHIFT",
+    "luacheck",
+    "newid",
+    "oldid",
+    "RALT",
+    "RCTRL",
+    "relogin",
+    "RSHIFT",
+    "spellid",
+    "srch",
+    "Tageshi",
+    "usenum",
+    "xinsonic"
+  ]
+}

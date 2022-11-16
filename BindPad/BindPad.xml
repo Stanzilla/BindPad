@@ -206,20 +206,20 @@
             <AbsDimension x="400" y="518" />
         </Size>
         <Layers>
-			<Layer level="OVERLAY" textureSubLevel="-1">
-				<Texture name="MacroFramePortrait" file="Interface\MacroFrame\MacroFrame-Icon">
-					<Size x="60" y="60"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="-5" y="7"/>
-					</Anchors>
-				</Texture>
-			</Layer>
+            <Layer level="OVERLAY" textureSubLevel="-1">
+                <Texture name="MacroFramePortrait" file="Interface\MacroFrame\MacroFrame-Icon">
+                    <Size x="60" y="60"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="-5" y="7"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
         </Layers>
         <Frames>
             <ScrollFrame name="BindPadScrollFrame" inherits="UIPanelScrollFrameTemplate">
                 <Size x="350" y="370" />
                 <Anchors>
-			        <Anchor point="TOPLEFT" x="13" y="-68"/>
+                    <Anchor point="TOPLEFT" x="13" y="-68"/>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
@@ -903,7 +903,7 @@
                         end
                     </OnEnterPressed>
                     <OnDisable function="InputBoxInstructions_OnDisable"/>
-			        <OnEnable function="InputBoxInstructions_OnEnable"/>
+                    <OnEnable function="InputBoxInstructions_OnEnable"/>
                 </Scripts>
                 <FontString inherits="ChatFontNormal" />
             </EditBox>
@@ -1263,8 +1263,8 @@
             <CheckButton name="BindPadMacroFrameSlotButton" inherits="SimplePopupButtonTemplate" id="0">
                 <NormalTexture name="$parentIcon" parentKey="Icon">
                     <Size>
-				        <AbsDimension x="36" y="36"/>
-			        </Size>
+                        <AbsDimension x="36" y="36"/>
+                    </Size>
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="BindPadMacroFrameSlotBackground">
                             <Offset>
