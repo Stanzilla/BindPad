@@ -249,7 +249,7 @@
                 </Layers>
                 <Scripts>
                     <OnLoad>
-                        self.scrollBarHideable = true
+                        self.scrollBarHideable = false
                         ScrollFrame_OnLoad(self)
                     </OnLoad>
                 </Scripts>
@@ -264,7 +264,7 @@
                                 <Size x="285" y="36" />
                                 <Layers>
                                     <Layer level="ARTWORK">
-                                        <FontString name="BindPadScrollFrameNumber" inherits="GameFontNormal" justifyH="RIGHT" text="42 Slots shown">
+                                        <FontString name="BindPadScrollFrameNumber" inherits="GameFontNormal" justifyH="RIGHT" text="49 Slots shown">
                                             <Size>
                                                 <AbsDimension x="102" y="0" />
                                             </Size>
