@@ -30,7 +30,7 @@ UIPanelWindows["BindPadFrame"] = { area = "left", pushable = 8, whileDead = 1 };
 UIPanelWindows["BindPadMacroFrame"] = { area = "left", pushable = 9, whileDead = 1 };
 
 local BINDPAD_MAXSLOTS_DEFAULT
-if isRetail() then
+if isRetail then
     BINDPAD_MAXSLOTS_DEFAULT = 49;
 else
     BINDPAD_MAXSLOTS_DEFAULT = 42;
@@ -2166,7 +2166,7 @@ hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
 BindPadCore.useBindPadSlot = 0;
 function BindPadCore.CreateBindPadSlot(usenum)
     local NUM_SLOTS_PER_ROW
-    if isRetail() then
+    if isRetail then
         NUM_SLOTS_PER_ROW = 7;
     else
         NUM_SLOTS_PER_ROW = 6;
