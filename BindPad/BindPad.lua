@@ -29,7 +29,12 @@ local MACRO_ICON_FILENAMES = {};
 UIPanelWindows["BindPadFrame"] = { area = "left", pushable = 8, whileDead = 1 };
 UIPanelWindows["BindPadMacroFrame"] = { area = "left", pushable = 9, whileDead = 1 };
 
-local BINDPAD_MAXSLOTS_DEFAULT = 49;
+local BINDPAD_MAXSLOTS_DEFAULT
+if isRetail() then
+    BINDPAD_MAXSLOTS_DEFAULT = 49;
+else
+    BINDPAD_MAXSLOTS_DEFAULT = 42;
+end
 local BINDPAD_MAXPROFILETAB = 5;
 local BINDPAD_GENERAL_TAB = 1;
 local BINDPAD_SPECIFIC_1ST_TAB = 2;
@@ -2160,8 +2165,12 @@ hooksecurefunc("CreateFrame", BindPadCore.CreateFrameHook);
 
 BindPadCore.useBindPadSlot = 0;
 function BindPadCore.CreateBindPadSlot(usenum)
-    local NUM_SLOTS_PER_ROW = 7;
-
+    local NUM_SLOTS_PER_ROW
+    if isRetail() then
+        NUM_SLOTS_PER_ROW = 7;
+    else
+        NUM_SLOTS_PER_ROW = 6;
+    end
     for i = min(usenum+1, BindPadCore.useBindPadSlot+1), max(usenum, BindPadCore.useBindPadSlot) do
         local button = _G["BindPadSlot"..i];
         if button == nil then
