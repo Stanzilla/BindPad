@@ -3,6 +3,7 @@
 ## Version: @project-version@
 ## Author: Tageshi
 ## Notes: BindPad - Keybinding UI for Items, Spells and Macros. Drag anything into BindPad's slot and click it to bind a key.
+## IconTexture: 134394
 ## SavedVariables: BindPadVars
 
-BindPad-Wrath.xml
+BindPad-Cata.xml

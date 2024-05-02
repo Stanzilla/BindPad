@@ -26,7 +26,7 @@ and a dialog window that asks you to `Press a key to bind` will appear.
 6. When you want to remove icons from BindPad frame, simply drag away the icon
 and press right click to delete it.
 
-Note that key bindings itself will not be unbinded when you delete the icon.
+Note that key bindings itself will not be unbound when you delete the icon.
 To unbind it, click the icon and click the `Unbind` button on the dialog window.
 Also you can simply override key bindings with different ones.
 

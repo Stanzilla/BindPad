@@ -1,28 +1,29 @@
 {
-  "version": "0.2",
-  "language": "en-US",
-  "ignoreRegExpList": [
-    "\\((.+?)\\)"
-  ],
-  "words": [
-    "bphotkey",
-    "BPMACRO",
-    "CVAR",
-    "INCOMBAT",
-    "LALT",
-    "LCTRL",
-    "LSHIFT",
-    "luacheck",
-    "newid",
-    "oldid",
-    "RALT",
-    "RCTRL",
-    "relogin",
-    "RSHIFT",
-    "spellid",
-    "srch",
-    "Tageshi",
-    "usenum",
-    "xinsonic"
-  ]
+    "version": "0.2",
+    "language": "en-US",
+    "ignoreRegExpList": ["\\((.+?)\\)"],
+    "words": [
+        "bphotkey",
+        "BPMACRO",
+        "Cata",
+        "CVAR",
+        "INCOMBAT",
+        "LALT",
+        "LCTRL",
+        "LSHIFT",
+        "luacheck",
+        "newid",
+        "nostance",
+        "oldid",
+        "RALT",
+        "RCTRL",
+        "relogin",
+        "RSHIFT",
+        "spellid",
+        "srch",
+        "Tageshi",
+        "usenum",
+        "Wowpedia",
+        "xinsonic"
+    ]
 }

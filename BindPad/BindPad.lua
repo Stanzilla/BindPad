@@ -77,6 +77,9 @@ BindPadCore = {
 local BindPadCore = BindPadCore;
 
 local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup;
+local GetItemInfo = C_Item.GetItemInfo and C_Item.GetItemInfo or GetItemInfo;
+local GetItemSpell = C_Item.GetItemSpell and C_Item.GetItemSpell or GetItemSpell;
+local PickupItem = C_Item.PickupItem and C_Item.PickupItem or PickupItem;
 
 function BindPadCore.GetSpecializationInfo(specIndex)
     if isRetail then
