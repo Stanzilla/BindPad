@@ -1,12 +1,15 @@
 {
     "version": "0.2",
     "language": "en-US",
-    "ignoreRegExpList": ["\\((.+?)\\)"],
+    "ignoreRegExpList": [
+        "\\((.+?)\\)"
+    ],
     "words": [
         "bphotkey",
         "BPMACRO",
         "Cata",
         "CVAR",
+        "Hilight",
         "INCOMBAT",
         "LALT",
         "LCTRL",
