@@ -1437,7 +1437,12 @@ function BindPadCore.PickupSpellBookItemHook(slot, bookType)
     BindPadCore.PickupSpellBookItem_slot = slot
     BindPadCore.PickupSpellBookItem_bookType = bookType
 end
-hooksecurefunc(C_SpellBook, "PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
+
+if isCata then
+    hooksecurefunc("PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
+else
+    hooksecurefunc(C_SpellBook, "PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
+end
 
 function BindPadCore.InitBindPadOnce(event)
     if not BindPadCore.initialized then
