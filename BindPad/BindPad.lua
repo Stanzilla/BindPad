@@ -962,8 +962,14 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         padSlot.texture = texture
     elseif type == "spell" then
         padSlot.type = TYPE_SPELL
-        local spellName = C_Spell.GetSpellName(spellid)
-        local texture = C_Spell.GetSpellInfo(spellid).iconID
+        local spellName
+        local texture
+        if not isRetail then
+            spellName, spellRank, texture = GetSpellInfo(spellid);
+        else
+            spellName = C_Spell.GetSpellName(spellid)
+            texture = C_Spell.GetSpellInfo(spellid).iconID
+        end
         padSlot.bookType = subdetail
         padSlot.name = spellName
         padSlot.rank = nil
@@ -996,7 +1002,12 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
     elseif type == "companion" then
         padSlot.type = TYPE_BPMACRO
         local creatureID, creatureName, creatureSpellID, texture = GetCompanionInfo(subdetail, detail)
-        local spellName = C_Spell.GetSpellName(creatureSpellID)
+        local spellName
+        if not isRetail then
+            spellName = GetSpellInfo(creatureSpellID);
+        else
+            spellName = C_Spell.GetSpellName(creatureSpellID)
+        end
         padSlot.name = BindPadCore.NewBindPadMacroName(padSlot, spellName)
         padSlot.texture = texture
         padSlot.macrotext = SLASH_CAST1 .. " " .. spellName
@@ -1004,8 +1015,15 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         padSlot.type = TYPE_BPMACRO
         if subdetail == 0 then
             local SUMMON_RANDOM_FAVORITE_MOUNT_SPELL = 150544
-            local spellName = C_Spell.GetSpellName(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL)
-            local spellIcon = C_Spell.GetSpellInfo(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL).iconID
+            local spellName
+            local spellIcon
+            if not isRetail then
+                spellName, _, spellIcon = GetSpellInfo(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL);
+
+            else
+                spellName = C_Spell.GetSpellName(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL)
+
+            end
             padSlot.name = BindPadCore.NewBindPadMacroName(padSlot, spellName)
             padSlot.texture = spellIcon
 
@@ -1411,7 +1429,12 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
         if kind == "item" then
             text = GetItemInfo(text)
         elseif kind == "spell" and spellid then
-            local name = C_Spell.GetSpellName(spellid)
+        local name
+        if not isRetail then
+            name = GetSpellInfo(spellid);
+        else
+            name = C_Spell.GetSpellName(spellid)
+        end
             text = name
         end
         if BindPadMacroFrameText:GetText() == "" then
@@ -1952,7 +1975,13 @@ function BindPadCore.GameTooltipSetBagItem(self, bag, slot)
 end
 
 function BindPadCore.GameTooltipSetSpellByID(self, spellID)
-    BindPadCore.InsertBindingTooltip(concat("SPELL ", C_Spell.GetSpellName(spellID)))
+    local spellName
+    if not isRetail then
+        spellName = GetSpellInfo(spellID);
+    else
+        spellName = C_Spell.GetSpellName(spellID)
+    end
+    BindPadCore.InsertBindingTooltip(concat("SPELL ", spellName))
 end
 
 function BindPadCore.GameTooltipSetSpellBookItem(self, slot, bookType)
@@ -2126,7 +2155,13 @@ function BindPadCore.GetActionCommand(actionSlot)
     end
     local type, id, subType, subSubType = GetActionInfo(actionSlot)
     if type == "spell" then
-        return concat("SPELL ", C_Spell.GetSpellName(id))
+    local spellName
+        if not isRetail then
+            spellName = GetSpellInfo(id);
+        else
+            spellName = C_Spell.GetSpellName(id)
+        end
+        return concat("SPELL ", spellName)
     elseif type == "item" then
         return concat("ITEM ", GetItemInfo(id))
     elseif type == "macro" then
@@ -2318,7 +2353,12 @@ function BindPadCore.GetBaseForMorphingSpell(spellAction)
             local skillType, spellId = GetSpellBookItemInfo(i, bookType)
             if "SPELL" == skillType then
                 local morphSpellName = string.upper(GetSpellBookItemName(i, bookType))
-                local baseSpellName = C_Spell.GetSpellName(spellId)
+                local baseSpellName
+                if not isRetail then
+                    baseSpellName = GetSpellInfo(spellId);
+                else
+                    baseSpellName = C_Spell.GetSpellName(spellId)
+                end
                 if string.upper(baseSpellName) ~= morphSpellName then
                     BindPadCore.morphingSpellCache["SPELL " .. morphSpellName] = "SPELL " .. baseSpellName
                 end
