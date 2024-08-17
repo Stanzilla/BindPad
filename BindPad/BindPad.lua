@@ -80,6 +80,7 @@ local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup
 local GetItemInfo = C_Item.GetItemInfo and C_Item.GetItemInfo or GetItemInfo
 local GetItemSpell = C_Item.GetItemSpell and C_Item.GetItemSpell or GetItemSpell
 local PickupItem = C_Item.PickupItem and C_Item.PickupItem or PickupItem
+local PickupSpell = C_Spell.PickupSpell and C_Spell.PickupSpell or PickupSpell
 local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 local GetContainerItemID = C_Item.GetContainerItemID and C_Item.GetContainerItemID or GetContainerItemID
 local GetNumEquipmentSets = C_EquipmentSet.GetNumEquipmentSets and C_EquipmentSet.GetNumEquipmentSets or GetNumEquipmentSets
