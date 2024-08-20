@@ -82,7 +82,7 @@ local GetItemSpell = C_Item.GetItemSpell and C_Item.GetItemSpell or GetItemSpell
 local PickupItem = C_Item.PickupItem and C_Item.PickupItem or PickupItem
 local PickupSpell = C_Spell.PickupSpell and C_Spell.PickupSpell or PickupSpell
 local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
-local GetContainerItemID = C_Item.GetContainerItemID and C_Item.GetContainerItemID or GetContainerItemID
+local GetContainerItemID = C_Container.GetContainerItemID and C_Container.GetContainerItemID or GetContainerItemID
 local GetNumEquipmentSets = C_EquipmentSet.GetNumEquipmentSets and C_EquipmentSet.GetNumEquipmentSets or GetNumEquipmentSets
 local GetEquipmentSetInfo = C_EquipmentSet.GetEquipmentSetInfo and C_EquipmentSet.GetEquipmentSetInfo or GetEquipmentSetInfo
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo and C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
@@ -966,7 +966,7 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         local spellName
         local texture
         if not isRetail then
-            spellName, spellRank, texture = GetSpellInfo(spellid);
+            spellName, spellRank, texture = GetSpellInfo(spellid)
         else
             spellName = C_Spell.GetSpellName(spellid)
             texture = C_Spell.GetSpellInfo(spellid).iconID
@@ -1005,7 +1005,7 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         local creatureID, creatureName, creatureSpellID, texture = GetCompanionInfo(subdetail, detail)
         local spellName
         if not isRetail then
-            spellName = GetSpellInfo(creatureSpellID);
+            spellName = GetSpellInfo(creatureSpellID)
         else
             spellName = C_Spell.GetSpellName(creatureSpellID)
         end
@@ -1019,11 +1019,9 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
             local spellName
             local spellIcon
             if not isRetail then
-                spellName, _, spellIcon = GetSpellInfo(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL);
-
+                spellName, _, spellIcon = GetSpellInfo(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL)
             else
                 spellName = C_Spell.GetSpellName(SUMMON_RANDOM_FAVORITE_MOUNT_SPELL)
-
             end
             padSlot.name = BindPadCore.NewBindPadMacroName(padSlot, spellName)
             padSlot.texture = spellIcon
@@ -1344,7 +1342,16 @@ function BindPadCore.GetSpellNum(bookType)
     else
         local i = 1
         while true do
-            local name, texture, offset, numSpells, isGuild, offSpecID = GetSpellTabInfo(i)
+            local name, texture, offset, numSpells, isGuild, offSpecID
+            if C_SpellBook.GetSpellBookSkillLineInfo then
+                local skillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo(i)
+                if skillLineInfo then
+                    name, texture, offset, numSpells, isGuild, offSpecID =
+                        skillLineInfo.name, skillLineInfo.texture, skillLineInfo.itemIndexOffset, skillLineInfo.numSpellBookItems, skillLineInfo.isGuild, skillLineInfo.offSpecID
+                end
+            else
+                name, texture, offset, numSpells, isGuild, offSpecID = GetSpellTabInfo(i)
+            end
             if not name then
                 break
             end
@@ -1357,7 +1364,7 @@ end
 
 function BindPadCore.FindSpellBookIdByName(srchName, srchRank, bookType)
     for i = 1, BindPadCore.GetSpellNum(bookType), 1 do
-        local spellName, spellRank = GetSpellBookItemName(i, bookType)
+        local spellName, spellRank = C_SpellBook and C_SpellBook.GetSpellBookItemName(i, bookType) or GetSpellBookItemName(i, bookType)
         if spellName == srchName then
             return i
         end
@@ -1430,12 +1437,12 @@ function BindPadCore.ChatEdit_InsertLinkHook(text)
         if kind == "item" then
             text = GetItemInfo(text)
         elseif kind == "spell" and spellid then
-        local name
-        if not isRetail then
-            name = GetSpellInfo(spellid);
-        else
-            name = C_Spell.GetSpellName(spellid)
-        end
+            local name
+            if not isRetail then
+                name = GetSpellInfo(spellid)
+            else
+                name = C_Spell.GetSpellName(spellid)
+            end
             text = name
         end
         if BindPadMacroFrameText:GetText() == "" then
@@ -1978,7 +1985,7 @@ end
 function BindPadCore.GameTooltipSetSpellByID(self, spellID)
     local spellName
     if not isRetail then
-        spellName = GetSpellInfo(spellID);
+        spellName = GetSpellInfo(spellID)
     else
         spellName = C_Spell.GetSpellName(spellID)
     end
@@ -1986,7 +1993,7 @@ function BindPadCore.GameTooltipSetSpellByID(self, spellID)
 end
 
 function BindPadCore.GameTooltipSetSpellBookItem(self, slot, bookType)
-    BindPadCore.InsertBindingTooltip(concat("SPELL ", GetSpellBookItemName(slot, bookType)))
+    BindPadCore.InsertBindingTooltip(concat("SPELL ", C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName or GetSpellBookItemName(slot, bookType)))
 end
 
 function BindPadCore.GameTooltipSetAction(self, slot)
@@ -2156,9 +2163,9 @@ function BindPadCore.GetActionCommand(actionSlot)
     end
     local type, id, subType, subSubType = GetActionInfo(actionSlot)
     if type == "spell" then
-    local spellName
+        local spellName
         if not isRetail then
-            spellName = GetSpellInfo(id);
+            spellName = GetSpellInfo(id)
         else
             spellName = C_Spell.GetSpellName(id)
         end
@@ -2356,7 +2363,7 @@ function BindPadCore.GetBaseForMorphingSpell(spellAction)
                 local morphSpellName = string.upper(GetSpellBookItemName(i, bookType))
                 local baseSpellName
                 if not isRetail then
-                    baseSpellName = GetSpellInfo(spellId);
+                    baseSpellName = GetSpellInfo(spellId)
                 else
                     baseSpellName = C_Spell.GetSpellName(spellId)
                 end
