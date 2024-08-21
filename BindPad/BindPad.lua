@@ -1993,7 +1993,7 @@ function BindPadCore.GameTooltipSetSpellByID(self, spellID)
 end
 
 function BindPadCore.GameTooltipSetSpellBookItem(self, slot, bookType)
-    BindPadCore.InsertBindingTooltip(concat("SPELL ", C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName or GetSpellBookItemName(slot, bookType)))
+    BindPadCore.InsertBindingTooltip(concat("SPELL ", GetSpellBookItemName(slot, bookType)))
 end
 
 function BindPadCore.GameTooltipSetAction(self, slot)
