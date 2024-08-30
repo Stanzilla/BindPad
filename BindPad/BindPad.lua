@@ -978,7 +978,8 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         padSlot.texture = texture
     elseif type == "petaction" then
         local spellName, spellRank = GetSpellBookItemName(detail, subdetail)
-        local texture = GetSpellBookItemTexture(detail, subdetail)
+        local texture = C_SpellBook.GetSpellBookItemTexture(detail, subdetail) and C_SpellBook.GetSpellBookItemTexture(detail, subdetail)
+            or GetSpellBookItemTexture(detail, subdetail)
         if BindPadPetAction[spellName] then
             padSlot.type = TYPE_BPMACRO
             padSlot.bookType = nil
@@ -1249,7 +1250,11 @@ function BindPadCore.PickupSlot(self, id, isOnDragStart)
         else
             local spellBookId = BindPadCore.FindSpellBookIdByName(padSlot.name, padSlot.rank, padSlot.bookType)
             if spellBookId then
-                PickupSpellBookItem(spellBookId, padSlot.bookType)
+                if C_SpellBook.PickupSpellBookItem then
+                    C_SpellBook.PickupSpellBookItem(spellBookId, padSlot.bookType)
+                else
+                    PickupSpellBookItem(spellBookId, padSlot.bookType)
+                end
             end
         end
     elseif TYPE_MACRO == padSlot.type then
@@ -1338,7 +1343,7 @@ end
 function BindPadCore.GetSpellNum(bookType)
     local spellNum
     if bookType == BOOKTYPE_PET then
-        spellNum = HasPetSpells() or 0
+        spellNum = C_SpellBook.HasPetSpells and C_SpellBook.HasPetSpells() or HasPetSpells() or 0
     else
         local i = 1
         while true do

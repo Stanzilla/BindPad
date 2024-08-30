@@ -35,7 +35,8 @@ globals = {
     "BindPadFrame",
 
 	-- framexml misc
-	"C_Timer",
+    "C_Timer",
+    "C_SpellBook",
 	"CooldownFrame_Set",
 	"DEFAULT_CHAT_FRAME",
 	"GameTooltip_Hide",
