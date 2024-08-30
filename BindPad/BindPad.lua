@@ -81,7 +81,6 @@ local GetItemInfo = C_Item.GetItemInfo and C_Item.GetItemInfo or GetItemInfo
 local GetItemSpell = C_Item.GetItemSpell and C_Item.GetItemSpell or GetItemSpell
 local PickupItem = C_Item.PickupItem and C_Item.PickupItem or PickupItem
 local PickupSpell = C_Spell.PickupSpell and C_Spell.PickupSpell or PickupSpell
-local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 local GetContainerItemID = C_Container.GetContainerItemID and C_Container.GetContainerItemID or GetContainerItemID
 local GetNumEquipmentSets = C_EquipmentSet.GetNumEquipmentSets and C_EquipmentSet.GetNumEquipmentSets or GetNumEquipmentSets
 local GetEquipmentSetInfo = C_EquipmentSet.GetEquipmentSetInfo and C_EquipmentSet.GetEquipmentSetInfo or GetEquipmentSetInfo
@@ -977,9 +976,8 @@ function BindPadCore.PlaceIntoSlot(id, type, detail, subdetail, spellid)
         padSlot.spellid = spellid
         padSlot.texture = texture
     elseif type == "petaction" then
-        local spellName, spellRank = GetSpellBookItemName(detail, subdetail)
-        local texture = C_SpellBook.GetSpellBookItemTexture(detail, subdetail) and C_SpellBook.GetSpellBookItemTexture(detail, subdetail)
-            or GetSpellBookItemTexture(detail, subdetail)
+        local spellName, spellRank = C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName(detail, subdetail) or GetSpellBookItemName(detail, subdetail)
+        local texture = C_SpellBook.GetSpellBookItemTexture and C_SpellBook.GetSpellBookItemTexture(detail, subdetail) or GetSpellBookItemTexture(detail, subdetail)
         if BindPadPetAction[spellName] then
             padSlot.type = TYPE_BPMACRO
             padSlot.bookType = nil
@@ -1342,7 +1340,7 @@ end
 
 function BindPadCore.GetSpellNum(bookType)
     local spellNum
-    if bookType == BOOKTYPE_PET then
+    if bookType == BOOKTYPE_PET or bookType == Enum.SpellBookSpellBank.Pet then
         spellNum = C_SpellBook.HasPetSpells and C_SpellBook.HasPetSpells() or HasPetSpells() or 0
     else
         local i = 1
@@ -1369,7 +1367,7 @@ end
 
 function BindPadCore.FindSpellBookIdByName(srchName, srchRank, bookType)
     for i = 1, BindPadCore.GetSpellNum(bookType), 1 do
-        local spellName, spellRank = C_SpellBook and C_SpellBook.GetSpellBookItemName(i, bookType) or GetSpellBookItemName(i, bookType)
+        local spellName = C_SpellBook and C_SpellBook.GetSpellBookItemName(i, bookType) or GetSpellBookItemName(i, bookType)
         if spellName == srchName then
             return i
         end
@@ -1998,7 +1996,9 @@ function BindPadCore.GameTooltipSetSpellByID(self, spellID)
 end
 
 function BindPadCore.GameTooltipSetSpellBookItem(self, slot, bookType)
-    BindPadCore.InsertBindingTooltip(concat("SPELL ", GetSpellBookItemName(slot, bookType)))
+    BindPadCore.InsertBindingTooltip(
+        concat("SPELL ", C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName(slot, bookType) or GetSpellBookItemName(slot, bookType))
+    )
 end
 
 function BindPadCore.GameTooltipSetAction(self, slot)
@@ -2361,11 +2361,11 @@ function BindPadCore.GetBaseForMorphingSpell(spellAction)
     if not BindPadCore.morphingSpellCache then
         BindPadCore.morphingSpellCache = {}
         local i
-        local bookType = BOOKTYPE_SPELL
+        local bookType = BOOKTYPE_SPELL and BOOKTYPE_SPELL or Enum.SpellBookSpellBank.Player
         for i = 1, BindPadCore.GetSpellNum(bookType), 1 do
             local skillType, spellId = GetSpellBookItemInfo(i, bookType)
             if "SPELL" == skillType then
-                local morphSpellName = string.upper(GetSpellBookItemName(i, bookType))
+                local morphSpellName = string.upper(C_SpellBook.GetSpellBookItemName and C_SpellBook.GetSpellBookItemName(i, bookType) or GetSpellBookItemName(i, bookType))
                 local baseSpellName
                 if not isRetail then
                     baseSpellName = GetSpellInfo(spellId)
