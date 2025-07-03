@@ -1,4 +1,4 @@
-## Interface: 40400
+## Interface: 50500
 ## Title: BindPad
 ## Version: @project-version@
 ## Author: Tageshi
@@ -6,4 +6,4 @@
 ## IconTexture: 134394
 ## SavedVariables: BindPadVars
 
-BindPad-Cata.xml
+BindPad.xml

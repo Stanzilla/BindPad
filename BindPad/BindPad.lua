@@ -17,7 +17,7 @@ local function concat(arg1, arg2)
 end
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+local isMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 
 local NUM_MACRO_ICONS_SHOWN = 20
 local NUM_ICONS_PER_ROW = 5
@@ -90,7 +90,7 @@ function BindPadCore.GetSpecializationInfo(specIndex)
     if isRetail then
         local id, name, description, icon, background, role, primaryStat = GetSpecializationInfo(specIndex)
         return name, icon
-    elseif isCata then
+    elseif isMists then
         local i = GetPrimaryTalentTree()
         if i and i ~= 0 then
             local _, name, _, icon = GetTalentTabInfo(i, false, false, specIndex)
@@ -1472,7 +1472,7 @@ function BindPadCore.PickupSpellBookItemHook(slot, bookType)
     BindPadCore.PickupSpellBookItem_bookType = bookType
 end
 
-if isCata then
+if isMists then
     hooksecurefunc("PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
 else
     hooksecurefunc(C_SpellBook, "PickupSpellBookItem", BindPadCore.PickupSpellBookItemHook)
