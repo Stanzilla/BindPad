@@ -6,4 +6,4 @@
 ## IconTexture: 134394
 ## SavedVariables: BindPadVars
 
-BindPad.xml
+BindPad-Mists.xml
